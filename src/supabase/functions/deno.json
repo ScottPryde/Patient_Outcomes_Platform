@@ -1,0 +1,14 @@
+{
+  "tasks": {
+    "start": "deno run --allow-all --watch --no-check server/index.tsx"
+  },
+  "imports": {
+    "hono": "npm:hono@^4.0.0",
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "lib": ["deno.window", "dom"]
+  }
+}
