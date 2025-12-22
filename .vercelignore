@@ -1,0 +1,17 @@
+# Exclude unnecessary files from Vercel builds
+node_modules
+.git
+.vscode
+.idea
+*.log
+*.md
+!README.md
+src/**/*.md
+src/supabase
+build
+dist
+.env.local
+.env.*.local
+.DS_Store
+Thumbs.db
+
