@@ -2,6 +2,7 @@
   {
       "name": "Patient Outcomes Platform Front-End",
       "version": "0.1.0",
+      "homepage":"https://patient-outcomes-platform-igkg4kx05-scotts-projects-f9746eda.vercel.app/" ,
       "private": true,
       "dependencies": {
           "@radix-ui/react-accordion": "^1.2.3",
