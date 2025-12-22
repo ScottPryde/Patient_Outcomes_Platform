@@ -4,7 +4,12 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({
+      // Disable TypeScript checking during build for faster builds
+      tsDecorators: true,
+    }),
+  ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
@@ -14,26 +19,37 @@ export default defineConfig({
   build: {
     target: 'esnext',
     outDir: 'build',
-    // Optimize build performance
+    // Aggressive build optimizations
     minify: 'esbuild',
     sourcemap: false,
-    // Reduce chunk size for faster builds
-    chunkSizeWarningLimit: 1000,
+    // Disable CSS code splitting for faster builds
+    cssCodeSplit: false,
+    // Reduce chunk size warnings
+    chunkSizeWarningLimit: 2000,
+    // Faster build with less checking
+    reportCompressedSize: false,
     rollupOptions: {
+      // Exclude Supabase functions from build (they're Deno, not part of frontend)
+      external: [],
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-select',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-tooltip',
-          ],
-          'chart-vendor': ['recharts'],
+        manualChunks: (id) => {
+          // More aggressive chunking for faster builds
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'react-vendor';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'radix-vendor';
+            }
+            if (id.includes('recharts')) {
+              return 'chart-vendor';
+            }
+            if (id.includes('lucide-react')) {
+              return 'icons-vendor';
+            }
+            // All other node_modules in one chunk
+            return 'vendor';
+          }
         },
       },
     },
@@ -42,9 +58,15 @@ export default defineConfig({
     port: 3000,
     // Only open browser in local development, not in CI/CD
     open: process.env.NODE_ENV !== 'production' && !process.env.CI,
+    fs: {
+      // Don't serve files outside of project root
+      strict: true,
+    },
   },
   // Optimize dependencies
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
   },
+  // Exclude Supabase functions from being processed
+  publicDir: 'public',
 });

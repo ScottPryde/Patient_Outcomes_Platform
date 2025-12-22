@@ -15,3 +15,7 @@ dist
 .DS_Store
 Thumbs.db
 
+# Exclude Supabase functions (Deno project, not part of frontend build)
+src/supabase/functions/**
+src/supabase/config.toml
+
