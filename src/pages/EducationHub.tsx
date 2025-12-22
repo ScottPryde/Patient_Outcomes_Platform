@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { CuriosityTracker } from '../components/curiosity/CuriosityTracker';
 import { apiRequest } from '../utils/supabase/client';
 import { useAuth } from '../contexts/AuthContext';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface EducationModule {
   id: string;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { User, Mail, Phone, Calendar, Shield, Bell, Accessibility, Palette, Save } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 export function Profile() {
   const { user, updateUser } = useAuth();

@@ -24,7 +24,7 @@ import { DiagnosticsPage } from './pages/DiagnosticsPage';
 import { SupabaseInit } from './components/SupabaseInit';
 import { ConfigurationWarning } from './components/ConfigurationWarning';
 import { BackendErrorBanner } from './components/BackendErrorBanner';
-import { Toaster } from 'sonner@2.0.3';
+import { Toaster } from 'sonner';
 
 const queryClient = new QueryClient({
   defaultOptions: {

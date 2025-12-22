@@ -1,7 +1,7 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { BackendConfigBanner } from '../../components/BackendConfigBanner';
 import { RedeployHint } from '../../components/RedeployHint';
