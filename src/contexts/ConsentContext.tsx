@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Consent, UserConsent } from '../types';
-import { useAuth } from './AuthContext';
+import { AuthContext } from './AuthContext';
 import { mockConsents, mockUserConsents } from '../lib/mockData';
 
 interface ConsentContextType {
@@ -18,7 +18,9 @@ interface ConsentContextType {
 const ConsentContext = createContext<ConsentContextType | undefined>(undefined);
 
 export function ConsentProvider({ children }: { children: ReactNode }) {
-  const { user, activePatientId } = useAuth();
+  const auth = useContext(AuthContext);
+  if (auth === undefined) throw new Error('ConsentProvider must be used within an AuthProvider');
+  const { user, activePatientId } = auth;
   const [consents, setConsents] = useState<Consent[]>([]);
   const [userConsents, setUserConsents] = useState<UserConsent[]>([]);
   const [isLoading, setIsLoading] = useState(true);

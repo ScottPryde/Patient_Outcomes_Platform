@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Notification } from '../types';
-import { useAuth } from './AuthContext';
+import { AuthContext } from './AuthContext';
 import { mockNotifications } from '../lib/mockData';
 
 interface NotificationContextType {
@@ -17,7 +17,9 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
-  const { user, activePatientId } = useAuth();
+  const auth = useContext(AuthContext);
+  if (auth === undefined) throw new Error('NotificationProvider must be used within an AuthProvider');
+  const { user, activePatientId } = auth;
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
