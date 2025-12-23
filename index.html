@@ -9,6 +9,25 @@
 
     <body>
       <div id="root"></div>
+      <script>
+        // Early global error hooks to capture init-time errors (runs before app code)
+        window.addEventListener('error', function (e) {
+          try {
+            console.error('[GLOBAL ERROR] message:', e.message, 'file:', e.filename, 'line:', e.lineno, 'col:', e.colno);
+            if (e.error && e.error.stack) console.error('[GLOBAL ERROR] stack:', e.error.stack);
+          } catch (err) {
+            console.error('[GLOBAL ERROR] failed to log error', err);
+          }
+        }, { capture: true });
+        window.addEventListener('unhandledrejection', function (e) {
+          try {
+            console.error('[UNHANDLED REJECTION] reason:', e.reason && (e.reason.stack || e.reason));
+          } catch (err) {
+            console.error('[UNHANDLED REJECTION] failed to log', err);
+          }
+        });
+      </script>
+
       <script type="module" src="/src/main.tsx"></script>
     </body>
   </html>

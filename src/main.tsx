@@ -3,5 +3,7 @@
   import App from "./App.tsx";
   import "./index.css";
 
-  createRoot(document.getElementById("root")!).render(<App />);
+// Diagnostic: module initialization log (helps capture import/init ordering in production)
+console.log('[main] module init', new Date().toISOString());
+
    
