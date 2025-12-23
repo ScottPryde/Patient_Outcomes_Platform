@@ -28,7 +28,11 @@ interface RegisterData {
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Diagnostic: module initialization timestamp
+console.log('[AuthContext] module init:', new Date().toISOString());
+
 export function AuthProvider({ children }: { children: ReactNode }) {
+  console.log('[AuthContext] AuthProvider render');
   const [user, setUser] = useState<User | null>(null);
   const [linkedPatients, setLinkedPatients] = useState<LinkedPatient[]>([]);
   const [activePatientId, setActivePatientId] = useState<string | null>(null);

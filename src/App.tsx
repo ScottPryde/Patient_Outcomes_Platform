@@ -38,6 +38,7 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
+  console.log('[App] module render');
   return (
     <ErrorBoundary>
       <SupabaseInit>

@@ -17,8 +17,10 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
+  console.log('[NotificationContext] module init');
   const auth = useContext(AuthContext);
   if (auth === undefined) throw new Error('NotificationProvider must be used within an AuthProvider');
+  console.log('[NotificationContext] got auth context');
   const { user, activePatientId } = auth;
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);

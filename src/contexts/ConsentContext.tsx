@@ -18,8 +18,10 @@ interface ConsentContextType {
 const ConsentContext = createContext<ConsentContextType | undefined>(undefined);
 
 export function ConsentProvider({ children }: { children: ReactNode }) {
+  console.log('[ConsentContext] module init');
   const auth = useContext(AuthContext);
   if (auth === undefined) throw new Error('ConsentProvider must be used within an AuthProvider');
+  console.log('[ConsentContext] got auth context');
   const { user, activePatientId } = auth;
   const [consents, setConsents] = useState<Consent[]>([]);
   const [userConsents, setUserConsents] = useState<UserConsent[]>([]);
