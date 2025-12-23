@@ -21,7 +21,7 @@ export default defineConfig({
     outDir: 'build',
     // Aggressive build optimizations
     minify: 'esbuild',
-    sourcemap: false,
+    sourcemap: true,
     // Disable CSS code splitting for faster builds
     cssCodeSplit: false,
     // Reduce chunk size warnings

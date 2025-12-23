@@ -24,6 +24,7 @@ import { DiagnosticsPage } from './pages/DiagnosticsPage';
 import { SupabaseInit } from './components/SupabaseInit';
 import { ConfigurationWarning } from './components/ConfigurationWarning';
 import { BackendErrorBanner } from './components/BackendErrorBanner';
+import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster } from 'sonner';
 
 const queryClient = new QueryClient({
@@ -38,16 +39,17 @@ const queryClient = new QueryClient({
 
 export default function App() {
   return (
-    <SupabaseInit>
-      <ConfigurationWarning />
-      <BackendErrorBanner />
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <AuthProvider>
-            <ConsentProvider>
-              <NotificationProvider>
-                <Router>
-                  <Routes>
+    <ErrorBoundary>
+      <SupabaseInit>
+        <ConfigurationWarning />
+        <BackendErrorBanner />
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <AuthProvider>
+              <ConsentProvider>
+                <NotificationProvider>
+                  <Router>
+                    <Routes>
                     {/* Public routes */}
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
@@ -95,6 +97,7 @@ export default function App() {
           </AuthProvider>
         </ThemeProvider>
       </QueryClientProvider>
-    </SupabaseInit>
+      </SupabaseInit>
+    </ErrorBoundary>
   );
 }
