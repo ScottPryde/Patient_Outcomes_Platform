@@ -1,0 +1,39 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Patient Outcomes Platform Front-End</title>
+      <script type="module" crossorigin src="/assets/index-DS3gPrXQ.js"></script>
+      <link rel="modulepreload" crossorigin href="/assets/vendor-DfnADUff.js">
+      <link rel="modulepreload" crossorigin href="/assets/radix-vendor-Dc_FVRD7.js">
+      <link rel="modulepreload" crossorigin href="/assets/react-vendor-B203iyVE.js">
+      <link rel="modulepreload" crossorigin href="/assets/chart-vendor-CUHQ8YUC.js">
+      <link rel="stylesheet" crossorigin href="/assets/style-DjHhRG_l.css">
+    </head>
+
+    <body>
+      <div id="root"></div>
+      <script>
+        // Early global error hooks to capture init-time errors (runs before app code)
+        window.addEventListener('error', function (e) {
+          try {
+            console.error('[GLOBAL ERROR] message:', e.message, 'file:', e.filename, 'line:', e.lineno, 'col:', e.colno);
+            if (e.error && e.error.stack) console.error('[GLOBAL ERROR] stack:', e.error.stack);
+          } catch (err) {
+            console.error('[GLOBAL ERROR] failed to log error', err);
+          }
+        }, { capture: true });
+        window.addEventListener('unhandledrejection', function (e) {
+          try {
+            console.error('[UNHANDLED REJECTION] reason:', e.reason && (e.reason.stack || e.reason));
+          } catch (err) {
+            console.error('[UNHANDLED REJECTION] failed to log', err);
+          }
+        });
+      </script>
+
+    </body>
+  </html>
+  
