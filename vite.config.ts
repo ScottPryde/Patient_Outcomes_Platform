@@ -20,7 +20,7 @@ export default defineConfig({
     target: 'esnext',
     outDir: 'build',
     // Aggressive build optimizations
-    minify: 'esbuild',
+    minify: false,//'esbuild',
     sourcemap: true,
     // Disable CSS code splitting for faster builds
     cssCodeSplit: false,
