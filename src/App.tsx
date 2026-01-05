@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { ConsentProvider } from './contexts/ConsentContext';
@@ -25,7 +26,8 @@ import { SupabaseInit } from './components/SupabaseInit';
 import { ConfigurationWarning } from './components/ConfigurationWarning';
 import { BackendErrorBanner } from './components/BackendErrorBanner';
 import ErrorBoundary from './components/ErrorBoundary';
-import { Toaster } from './components/ui/sonner';
+
+const Toaster = lazy(() => import('./components/ui/sonner').then(m => ({ default: m.Toaster })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -92,7 +94,9 @@ export default function App() {
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </Router>
-                <Toaster position="top-right" richColors />
+                <Suspense fallback={null}>
+                  <Toaster position="top-right" richColors />
+                </Suspense>
               </NotificationProvider>
             </ConsentProvider>
           </AuthProvider>

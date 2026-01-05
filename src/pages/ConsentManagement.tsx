@@ -9,7 +9,7 @@ import {
   FileText,
   AlertCircle,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from '../components/ui/sonner';
 import { formatDistanceToNow } from "date-fns";
 
 export function ConsentManagement() {
