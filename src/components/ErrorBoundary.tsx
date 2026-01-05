@@ -1,12 +1,12 @@
-import React from 'react';
+import { Component, ErrorInfo, PropsWithChildren, ReactElement } from 'react';
 
 interface State {
   hasError: boolean;
   error: Error | null;
-  errorInfo: React.ErrorInfo | null;
+  errorInfo: ErrorInfo | null;
 }
 
-export default class ErrorBoundary extends React.Component<React.PropsWithChildren<{}>, State> {
+export default class ErrorBoundary extends Component<PropsWithChildren<{}>, State> {
   constructor(props: any) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
@@ -45,6 +45,6 @@ export default class ErrorBoundary extends React.Component<React.PropsWithChildr
       );
     }
 
-    return this.props.children as React.ReactElement;
+    return this.props.children as ReactElement;
   }
 }
