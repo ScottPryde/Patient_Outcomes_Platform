@@ -25,7 +25,7 @@ import { SupabaseInit } from './components/SupabaseInit';
 import { ConfigurationWarning } from './components/ConfigurationWarning';
 import { BackendErrorBanner } from './components/BackendErrorBanner';
 import ErrorBoundary from './components/ErrorBoundary';
-import { Toaster } from 'sonner';
+import { Toaster } from './components/ui/sonner';
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { UserPlus, Mail, Check, X, Clock, Shield } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from '../components/ui/sonner';
 
 export function CaregiverLinking() {
   const { user, linkedPatients } = useAuth();

@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { toast } from 'sonner';
+import { toast } from '../../components/ui/sonner';
 import { UserRole } from '../../types';
 import { Eye, EyeOff, UserPlus } from 'lucide-react';
 import { BackendConfigBanner } from '../../components/BackendConfigBanner';

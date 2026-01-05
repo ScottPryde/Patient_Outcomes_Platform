@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Mail, Users, UserPlus, ClipboardList, Share2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from '../components/ui/sonner';
 import { useAuth } from '../contexts/AuthContext';
 
 const CARE_ROLES = ['Parent', 'Sibling', 'Child', 'Friend'] as const;

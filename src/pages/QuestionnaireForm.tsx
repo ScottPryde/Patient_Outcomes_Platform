@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { mockQuestionnaires } from '../lib/mockData';
 import { Question, QuestionAnswer } from '../types';
-import { toast } from 'sonner';
+import { toast } from '../components/ui/sonner';
 import { ArrowLeft, ArrowRight, Save, Send, AlertCircle } from 'lucide-react';
 
 export function QuestionnaireForm() {
