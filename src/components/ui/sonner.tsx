@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, lazy, useCallback } from "react";
+import { Suspense, lazy, createElement } from "react";
 import type { ToasterProps } from "sonner";
 
 const SonnerLazy = lazy(async () => {
@@ -9,7 +9,7 @@ const SonnerLazy = lazy(async () => {
   
   const ToasterComponent = ({ ...props }: ToasterProps) => {
     const { theme = "system" } = useTheme();
-    return SonnerToaster({
+    return createElement(SonnerToaster, {
       theme: theme as ToasterProps["theme"],
       className: "toaster group",
       style: {
@@ -25,11 +25,7 @@ const SonnerLazy = lazy(async () => {
 });
 
 const Toaster = (props: ToasterProps) => {
-  return (
-    <Suspense fallback={null}>
-      <SonnerLazy {...props} />
-    </Suspense>
-  );
+  return createElement(Suspense, { fallback: null }, createElement(SonnerLazy, props));
 };
 
 export { Toaster };

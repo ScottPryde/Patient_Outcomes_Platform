@@ -6,11 +6,14 @@
 // Diagnostic: module initialization log (helps capture import/init ordering in production)
 console.log('[main] module init', new Date().toISOString());
 
-// Mount the React application
-const rootEl = document.getElementById('root');
-if (!rootEl) {
-  console.error('[main] root element not found');
-} else {
-  const root = createRoot(rootEl);
-  root.render(<App />);
-}
+// Defer app mounting until next tick to ensure all modules are loaded
+setTimeout(() => {
+  // Mount the React application
+  const rootEl = document.getElementById('root');
+  if (!rootEl) {
+    console.error('[main] root element not found');
+  } else {
+    const root = createRoot(rootEl);
+    root.render(<App />);
+  }
+}, 0);

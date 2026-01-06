@@ -47,6 +47,15 @@ export default defineConfig({
             if (id.includes('lucide-react')) {
               return 'icons-vendor';
             }
+            if (id.includes('motion')) {
+              return 'motion-vendor';
+            }
+            if (id.includes('next-themes')) {
+              return 'next-themes-vendor';
+            }
+            if (id.includes('sonner')) {
+              return 'sonner-vendor';
+            }
             // All other node_modules in one chunk
             return 'vendor';
           }
