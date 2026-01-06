@@ -1,0 +1,83 @@
+Engineering Spec — Patient Outcomes Platform (Condensed)
+
+Overview
+- Build a production-ready React + TypeScript + Vite frontend that mirrors the Patient Outcomes app features (dashboard, questionnaires workflow, profile, consent management, toasts, animations).
+- Prioritize reliability and deterministic startup behavior: prevent React TDZ/init errors caused by vendor code executing React-dependent calls at module evaluation time.
+
+Key Architectural Decisions
+- Tech stack: React 18, TypeScript, Vite (SWC), TailwindCSS, React Router v6, TanStack Query, Recharts, Sonner (toasts), motion/react for animations, Supabase (or mock backend).
+- CI/CD: GitHub Actions for PR checks; deploy to Vercel.
+
+Anti-TDZ & Reliability Rules (non-negotiable)
+1. No namespace or default top-level React imports in executing modules: disallow `import * as React from 'react'` and `import React from 'react'` in source files that execute logic at module scope. Use named or `import type` for types.
+2. Defensive consumption of vendor libs that may run React code at module scope (e.g., sonner, next-themes, motion): always runtime/dynamic import them via lazy components or runtime helpers.
+3. Chunk control: Configure Vite manualChunks to extract `react-vendor`, `motion-vendor`, `sonner-vendor`, `next-themes-vendor`, and `vendor` so React can initialize predictably.
+4. Add build-time bundle scan and lint checks to fail PRs if forbidden patterns (`createContext(`, `React.createElement`, `React2.createElement`) appear in non-react initial chunks.
+5. Add a minimal mount-deferral fallback (microtask deferral) only if bundle-scan flags potential ordering issues.
+
+Implementation Checklist (condensed)
+- Replace default/namespace React imports with named/type imports in all modules.
+- Create `src/components/ui/sonner.tsx` as a runtime wrapper:
+  - Lazy-load both `next-themes` and `sonner` inside the lazy factory.
+  - Export `Toaster` (lazy/Suspense) and `toast` helper that does `import('sonner').then(m => m.toast.*(...))`.
+- Change all `import { toast } from 'sonner'` → `import { toast } from '@/components/ui/sonner'`.
+- Lazy-load Toaster in `App.tsx` with Suspense.
+- Vite: add manualChunks for react, motion, sonner, next-themes.
+- Add `scripts/bundle-scan.js` and `scripts/check-react-imports.js` and include them in CI.
+- Add Playwright smoke test: verifies no init console errors and that toast and an animation render.
+- Add PR template and a short postmortem document explaining the root cause and guardrails.
+
+Build and CI Checks (commands)
+- Local pre-merge checks: `npm run lint && npm run typecheck && npm run build && node scripts/bundle-scan.js`.
+- CI pipeline: run `check:react-imports`, `build`, `bundle-scan`, `smoke-test` (Playwright) as blocking steps.
+
+Bundle-scan Outline
+- Verify `react-vendor` chunk exists.
+- Scan other chunks for forbidden regex: `/createContext\(/`, `/React\.createElement/`, `/React2\./`.
+- Fail if any found in initial chunks.
+
+Smoke Tests (Playwright outline)
+- Start a static server to serve `build/`.
+- Open page, capture errors for first 3s — fail test if any TDZ/init errors.
+- Programmatically trigger a toast (or call wrapper) and assert the toast appears within 2s.
+
+Deliverables
+- Complete repo with the above changes implemented.
+- `docs/POSTMORTEM.md` explaining cause/fix/guards.
+- GitHub Actions workflow file for the pipeline.
+- `scripts/bundle-scan.js`, `scripts/check-react-imports.js`.
+- Playwright smoke tests and instructions to run locally.
+
+Acceptance Criteria
+- `npm run build` succeeds and `node scripts/bundle-scan.js` prints `Bundle scan OK`.
+- CI: PRs fail if forbidden imports or forbidden bundle patterns are present.
+- Production deployment shows no console errors related to React initialization and toasts/animations behave normally.
+
+
+Prompt — Solution-Focused (to give to an LLM to implement)
+
+You are an expert frontend engineer and SRE-focused developer. Your task is to implement a production-quality Patient Outcomes frontend app and pipeline that eliminates React startup/TDZ risks by design, and includes automated checks to prevent regressions. Deliver a single PR that implements features, reliability patterns, CI checks, and smoke tests described below. Be explicit, minimal-risk, and provide testable verification steps.
+
+Requirements (explicit)
+- Implement the app pages and components (dashboard, questionnaires, results, profile, consent, admin skeleton, onboarding, global toasts, context providers).
+- Remove top-level React namespace/default imports across the codebase; replace with named imports or `import type` for types.
+- Implement a runtime wrapper for the toast library that lazy-loads both the toaster component and the `useTheme` hook inside the lazy factory; export a runtime `toast` helper.
+- Ensure Toaster is lazy-loaded in the app and that all call sites use the runtime `toast` helper.
+- Update `vite.config.ts` to create separate chunks for react, motion, sonner, and next-themes.
+- Add `scripts/bundle-scan.js` that asserts `react-vendor` exists and scans other chunks for forbidden patterns; add a lint script to detect forbidden React import patterns.
+- Add Playwright smoke tests that validate no init-time errors in the console and that toast/animations work.
+- Add CI workflow (GitHub Actions) to run checks on PRs and build+smoke tests on merge to staging.
+
+Testing & Acceptance
+- Provide commands and expected outputs for local verification (build + bundle-scan + smoke tests) and a short runbook for production rollback.
+- Include a short postmortem explaining the root cause and rationale for the changes.
+
+Constraints
+- Avoid major library upgrades unless necessary and justified with tests.
+- Prefer dynamic imports, chunk control, and CI detection to prevent regressions.
+- Keep changes minimal and reversible where feasible.
+
+---
+
+Notes
+- This document is intentionally concise and designed to be converted into a PR checklist and implementation tasks for developers or an LLM to act on.
