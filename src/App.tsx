@@ -21,6 +21,7 @@ import { AdminPanel } from './pages/admin/AdminPanel';
 import { CaregiverLinking } from './pages/CaregiverLinking';
 import { CareGroup } from './pages/CareGroup';
 import { EducationHub } from './pages/EducationHub';
+import { MyObservationsPage } from './pages/MyObservationsPage';
 import { DiagnosticsPage } from './pages/DiagnosticsPage';
 import { SupabaseInit } from './components/SupabaseInit';
 import { ConfigurationWarning } from './components/ConfigurationWarning';
@@ -70,6 +71,7 @@ export default function App() {
                       <Route index element={<Dashboard />} />
                       <Route path="questionnaires" element={<Questionnaires />} />
                       <Route path="questionnaires/:id" element={<QuestionnaireForm />} />
+                      <Route path="observations" element={<MyObservationsPage />} />
                       <Route path="care-group" element={<CareGroup />} />
                       <Route path="results" element={<Results />} />
                       <Route path="trials" element={<TrialsHub />} />
