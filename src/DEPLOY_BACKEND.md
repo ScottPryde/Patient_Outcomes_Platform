@@ -6,7 +6,7 @@ This guide will help you deploy the Care-PRO Supabase Edge Function backend to y
 
 Before deploying, ensure you have:
 1. ✅ A Supabase account at https://supabase.com
-2. ✅ Your project URL: `https://wjubqrmiomuxkcnaztdh.supabase.co`
+2. ✅ Your project URL: `https://yforafidhxehaecwkird.supabase.co`
 3. ✅ Supabase CLI installed on your local machine
 
 ## 🔧 Step 1: Install Supabase CLI
@@ -45,7 +45,7 @@ This will open a browser window for authentication. After logging in, you'll rec
 From your project root directory (where this README is located):
 
 ```bash
-supabase link --project-ref wjubqrmiomuxkcnaztdh
+supabase link --project-ref yforafidhxehaecwkird
 ```
 
 You'll be prompted to enter your database password. This is the password you set when creating your Supabase project.
@@ -55,10 +55,10 @@ You'll be prompted to enter your database password. This is the password you set
 The Edge Function needs three environment variables. Set them using the Supabase CLI:
 
 ```bash
-# Get your keys from: https://supabase.com/dashboard/project/wjubqrmiomuxkcnaztdh/settings/api
+# Get your keys from: https://supabase.com/dashboard/project/yforafidhxehaecwkird/settings/api
 
 # Set SUPABASE_URL
-supabase secrets set SUPABASE_URL=https://wjubqrmiomuxkcnaztdh.supabase.co
+supabase secrets set SUPABASE_URL=https://yforafidhxehaecwkird.supabase.co
 
 # Set SUPABASE_ANON_KEY (find in Settings > API > Project API keys > anon public)
 supabase secrets set SUPABASE_ANON_KEY=your_anon_key_here
@@ -69,8 +69,8 @@ supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 ```
 
 ### Where to Find Your Keys:
-1. Go to: https://supabase.com/dashboard/project/wjubqrmiomuxkcnaztdh/settings/api
-2. **Project URL**: Copy the URL (should be `https://wjubqrmiomuxkcnaztdh.supabase.co`)
+1. Go to: https://supabase.com/dashboard/project/yforafidhxehaecwkird/settings/api
+2. **Project URL**: Copy the URL (should be `https://yforafidhxehaecwkird.supabase.co`)
 3. **anon public**: Copy this key for `SUPABASE_ANON_KEY`
 4. **service_role**: Copy this key for `SUPABASE_SERVICE_ROLE_KEY` (⚠️ Keep this secret!)
 
@@ -85,14 +85,14 @@ supabase functions deploy make-server
 The CLI will:
 - Bundle your TypeScript code
 - Upload it to Supabase
-- Make it available at: `https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/`
+- Make it available at: `https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/`
 
 ## ✅ Step 6: Verify Deployment
 
 Test the health endpoint:
 
 ```bash
-curl https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/health
+curl https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health
 ```
 
 Expected response:
@@ -114,7 +114,7 @@ Expected response:
 Trigger the database seeding endpoint to create demo users and sample data:
 
 ```bash
-curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/seed
+curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/seed
 ```
 
 Expected response:
@@ -132,7 +132,7 @@ Expected response:
 Test user signup:
 
 ```bash
-curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/auth/signup \
+curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
     "email": "test@example.com",
@@ -146,7 +146,7 @@ curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e
 Test user signin with demo credentials:
 
 ```bash
-curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/auth/signin \
+curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/auth/signin \
   -H "Content-Type: application/json" \
   -d '{
     "email": "patient@carepro.com",
@@ -233,7 +233,7 @@ Once deployed, your backend provides 40+ API endpoints:
 **Cause**: `SUPABASE_SERVICE_ROLE_KEY` is not set or invalid.
 
 **Solution**:
-1. Verify the service_role key from: https://supabase.com/dashboard/project/wjubqrmiomuxkcnaztdh/settings/api
+1. Verify the service_role key from: https://supabase.com/dashboard/project/yforafidhxehaecwkird/settings/api
 2. The key should start with `eyJ` (it's a JWT token)
 3. Re-set the secret:
    ```bash
@@ -255,7 +255,7 @@ Once deployed, your backend provides 40+ API endpoints:
    ```
 2. Verify the URL matches your project:
    ```
-   https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/
+   https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/
    ```
 
 ### Issue: CORS Errors
@@ -275,7 +275,7 @@ Once deployed, your backend provides 40+ API endpoints:
    ```
 2. Manually trigger seeding:
    ```bash
-   curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/seed
+   curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/seed
    ```
 
 ## 📝 View Function Logs

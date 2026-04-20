@@ -108,7 +108,7 @@ export function BackendErrorBanner() {
                     <Button 
                       size="sm" 
                       variant="outline"
-                      onClick={() => window.open('https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/settings/api', '_blank')}
+                      onClick={() => window.open('https://app.supabase.com/project/yforafidhxehaecwkird/settings/api', '_blank')}
                       className="bg-red-900/10 border-red-700/50 hover:bg-red-900/20"
                     >
                       <ExternalLink className="h-4 w-4 mr-2" />

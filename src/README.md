@@ -7,7 +7,7 @@
 👉 **[START HERE: Quick Fix Guide →](/IMMEDIATE_FIX_GUIDE.md)**
 
 ### TL;DR Fix:
-1. Go to: https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/functions
+1. Go to: https://app.supabase.com/project/yforafidhxehaecwkird/functions
 2. Open `server` function → Secrets tab
 3. Update `SUPABASE_SERVICE_ROLE_KEY` with this JWT:
    ```

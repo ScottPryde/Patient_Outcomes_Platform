@@ -19,7 +19,7 @@ Common issues and their solutions when deploying the Care-PRO backend.
 **Solution:**
 
 1. **Get the correct service_role key:**
-   - Go to: https://supabase.com/dashboard/project/wjubqrmiomuxkcnaztdh/settings/api
+   - Go to: https://supabase.com/dashboard/project/yforafidhxehaecwkird/settings/api
    - Find "Project API keys" section
    - Copy the **service_role** key (NOT the anon/public key)
    - The key should start with `eyJ` (JWT format)
@@ -41,7 +41,7 @@ Common issues and their solutions when deploying the Care-PRO backend.
 
 5. **Test the health endpoint:**
    ```bash
-   curl https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/health
+   curl https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health
    ```
 
    Should show:
@@ -81,9 +81,9 @@ Common issues and their solutions when deploying the Care-PRO backend.
    ```
 
 3. **Verify the URL:**
-   - Base URL: `https://wjubqrmiomuxkcnaztdh.supabase.co`
+   - Base URL: `https://yforafidhxehaecwkird.supabase.co`
    - Function path: `/functions/v1/make-server-e8005093/`
-   - Full example: `https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/health`
+   - Full example: `https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health`
 
 ---
 
@@ -140,12 +140,12 @@ The backend already includes CORS headers. Ensure your frontend:
 
 2. **Manually trigger seeding:**
    ```bash
-   curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/seed
+   curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/seed
    ```
 
 3. **Verify seeding succeeded:**
    ```bash
-   curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/auth/signin \
+   curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/auth/signin \
      -H "Content-Type: application/json" \
      -d '{"email":"patient@carepro.com","password":"CarePRO2024!"}'
    ```
@@ -172,11 +172,11 @@ The backend already includes CORS headers. Ensure your frontend:
 
 2. **Re-seed database:**
    ```bash
-   curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/seed
+   curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/seed
    ```
 
 3. **Check Supabase Auth dashboard:**
-   - Go to: https://supabase.com/dashboard/project/wjubqrmiomuxkcnaztdh/auth/users
+   - Go to: https://supabase.com/dashboard/project/yforafidhxehaecwkird/auth/users
    - Verify demo users exist
 
 ---
@@ -201,7 +201,7 @@ The backend already includes CORS headers. Ensure your frontend:
 
 2. **Re-link project:**
    ```bash
-   supabase link --project-ref wjubqrmiomuxkcnaztdh
+   supabase link --project-ref yforafidhxehaecwkird
    ```
 
 3. **Check network connection:**
@@ -229,7 +229,7 @@ The backend already includes CORS headers. Ensure your frontend:
 
 1. **Set all three secrets:**
    ```bash
-   supabase secrets set SUPABASE_URL=https://wjubqrmiomuxkcnaztdh.supabase.co
+   supabase secrets set SUPABASE_URL=https://yforafidhxehaecwkird.supabase.co
    supabase secrets set SUPABASE_ANON_KEY=your_anon_key
    supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
    ```
@@ -311,12 +311,12 @@ The backend is configured correctly. Frontend should:
 **Solution:**
 
 1. **Check existing users:**
-   - Go to: https://supabase.com/dashboard/project/wjubqrmiomuxkcnaztdh/auth/users
+   - Go to: https://supabase.com/dashboard/project/yforafidhxehaecwkird/auth/users
    - Delete test users if needed
 
 2. **Verify signup endpoint:**
    ```bash
-   curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/auth/signup \
+   curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/auth/signup \
      -H "Content-Type: application/json" \
      -d '{
        "email": "newuser@example.com",
@@ -342,7 +342,7 @@ supabase functions logs make-server --follow
 
 ### Test Health Endpoint
 ```bash
-curl https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/health | jq
+curl https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health | jq
 ```
 
 ### List Secrets
@@ -367,7 +367,7 @@ supabase functions list
 Before reporting an issue, verify:
 
 - [ ] Supabase CLI is installed and updated
-- [ ] Project is linked: `supabase link --project-ref wjubqrmiomuxkcnaztdh`
+- [ ] Project is linked: `supabase link --project-ref yforafidhxehaecwkird`
 - [ ] All three secrets are set (URL, anon key, service_role key)
 - [ ] Service role key is valid JWT (starts with `eyJ`)
 - [ ] Function is deployed: `supabase functions deploy make-server`
@@ -386,7 +386,7 @@ Before reporting an issue, verify:
 
 2. **Verify all environment variables:**
    ```bash
-   curl https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/health
+   curl https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health
    ```
 
 3. **Test with curl first:**
@@ -400,11 +400,11 @@ Before reporting an issue, verify:
 
 5. **Redeploy from scratch:**
    ```bash
-   supabase secrets set SUPABASE_URL=https://wjubqrmiomuxkcnaztdh.supabase.co
+   supabase secrets set SUPABASE_URL=https://yforafidhxehaecwkird.supabase.co
    supabase secrets set SUPABASE_ANON_KEY=your_anon_key
    supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
    supabase functions deploy make-server
-   curl -X POST https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/seed
+   curl -X POST https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/seed
    ```
 
 ---

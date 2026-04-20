@@ -292,7 +292,7 @@ export function DiagnosticsPage() {
                       🔍 Complete 401 Troubleshooting Guide
                     </a>
                     <a 
-                      href="https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/functions/server/logs" 
+                      href="https://app.supabase.com/project/yforafidhxehaecwkird/functions/server/logs" 
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
@@ -300,7 +300,7 @@ export function DiagnosticsPage() {
                       📋 View Edge Function Logs
                     </a>
                     <a 
-                      href="https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/settings/api" 
+                      href="https://app.supabase.com/project/yforafidhxehaecwkird/settings/api" 
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -367,7 +367,7 @@ export function DiagnosticsPage() {
 
               <ol className="list-decimal list-inside space-y-2 text-blue-800">
                 <li>Go to your Supabase dashboard: <a href="https://app.supabase.com" target="_blank" rel="noopener noreferrer" className="underline font-medium">https://app.supabase.com</a></li>
-                <li>Select your project: <strong>wjubqrmiomuxkcnaztdh</strong></li>
+                <li>Select your project: <strong>yforafidhxehaecwkird</strong></li>
                 <li>Navigate to <strong>Edge Functions</strong> (or <strong>Functions</strong>) in the left sidebar</li>
                 <li>Find and click on the function: <strong>make-server-e8005093</strong></li>
                 <li>Click on the <strong>Secrets</strong> tab</li>
@@ -418,7 +418,7 @@ export function DiagnosticsPage() {
                   📖 Detailed Fix Guide
                 </a>
                 <a 
-                  href="https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/functions" 
+                  href="https://app.supabase.com/project/yforafidhxehaecwkird/functions" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:green-700"

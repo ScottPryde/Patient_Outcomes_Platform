@@ -13,7 +13,7 @@ You've set the `SUPABASE_SERVICE_ROLE_KEY` correctly in Supabase, but you're **s
 **Problem:** The Edge Function might not be deployed at all, or deployment failed.
 
 **Check:**
-1. Go to: https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/functions
+1. Go to: https://app.supabase.com/project/yforafidhxehaecwkird/functions
 2. Look for a function named `server` or `make-server-e8005093`
 3. Check its status - it should say "Active" or "Deployed"
 
@@ -43,14 +43,14 @@ You've set the `SUPABASE_SERVICE_ROLE_KEY` correctly in Supabase, but you're **s
 **This is the most important step!** The logs will tell you exactly what's wrong.
 
 **How to Check Logs:**
-1. Go to: https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/functions/server/logs
+1. Go to: https://app.supabase.com/project/yforafidhxehaecwkird/functions/server/logs
 2. Look for recent log entries (last 5 minutes)
 3. Look for these specific messages:
 
 **Good signs (Everything working):**
 ```
 === Server Starting ===
-SUPABASE_URL: https://wjubqrmiomuxkcnaztdh.supabase.co
+SUPABASE_URL: https://yforafidhxehaecwkird.supabase.co
 SUPABASE_ANON_KEY: SET
 SUPABASE_SERVICE_ROLE_KEY: SET
 ✅ Supabase client initialized successfully
@@ -87,7 +87,7 @@ Auth error status: 401
 **Problem:** You might have copied the wrong key, or Supabase changed it.
 
 **Where to Find It:**
-1. Go to: https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/settings/api
+1. Go to: https://app.supabase.com/project/yforafidhxehaecwkird/settings/api
 2. Scroll to **"Project API keys"** section
 3. Find **"service_role"** key (NOT anon key)
 4. It should be **"secret"** type
@@ -137,7 +137,7 @@ Auth error status: 401
 **Check:**
 1. Decode your JWT at https://jwt.io
 2. Look for the `"ref"` field in the payload
-3. It should say: `"ref": "wjubqrmiomuxkcnaztdh"`
+3. It should say: `"ref": "yforafidhxehaecwkird"`
 
 **If it's different:**
 - You copied the key from the wrong project
@@ -168,13 +168,13 @@ If you have CLI access:
 supabase login
 
 # Link to your project
-supabase link --project-ref wjubqrmiomuxkcnaztdh
+supabase link --project-ref yforafidhxehaecwkird
 
 # Deploy the function
 supabase functions deploy server
 
 # Set secrets via CLI
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your_key_here --project-ref wjubqrmiomuxkcnaztdh
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your_key_here --project-ref yforafidhxehaecwkird
 ```
 
 ---
@@ -201,7 +201,7 @@ supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your_key_here --project-ref wjubq
 
 **Test 1: Health Check**
 ```
-https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/health
+https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health
 ```
 
 Expected response:
@@ -223,7 +223,7 @@ Expected response:
 **Test 2: Try Signup Directly**
 ```bash
 curl -X POST \
-  https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/auth/signup \
+  https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
     "email": "test@example.com",

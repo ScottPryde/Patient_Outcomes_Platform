@@ -2,7 +2,7 @@
 
 Complete API reference for the Care-PRO backend.
 
-**Base URL:** `https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093`
+**Base URL:** `https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093`
 
 ---
 
@@ -66,7 +66,7 @@ Get public configuration (Supabase URL and anon key).
 **Response:**
 ```json
 {
-  "supabaseUrl": "https://wjubqrmiomuxkcnaztdh.supabase.co",
+  "supabaseUrl": "https://yforafidhxehaecwkird.supabase.co",
   "supabaseAnonKey": "eyJhbGc..."
 }
 ```

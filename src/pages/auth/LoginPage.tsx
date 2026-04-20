@@ -29,7 +29,7 @@ export function LoginPage() {
   const handleSeedDatabase = async () => {
     setIsSeeding(true);
     try {
-      const response = await fetch('https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/seed', {
+      const response = await fetch('https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/seed', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });

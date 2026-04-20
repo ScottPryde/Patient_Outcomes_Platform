@@ -5,7 +5,7 @@
 ### Authentication Keys (RESOLVED)
 - ✅ **Frontend Config** (`/config.tsx`): Correct anon key configured
 - ✅ **Backend Service Key**: SUPABASE_SERVICE_ROLE_KEY is correct
-- ✅ **Project URL**: https://wjubqrmiomuxkcnaztdh.supabase.co
+- ✅ **Project URL**: https://yforafidhxehaecwkird.supabase.co
 
 ### Recent Fixes
 - ✅ Fixed 401 authentication errors by using anon key instead of service role key in frontend
@@ -213,7 +213,7 @@
   "hasServiceRoleKey": true,
   "serviceRoleKeyFormat": "JWT (correct)",
   "serviceRoleKeyPreview": "eyJhbGciOiJIUzI1NiIs...",
-  "supabaseUrl": "https://wjubqrmiomuxkcnaztdh.supabase.co"
+  "supabaseUrl": "https://yforafidhxehaecwkird.supabase.co"
 }
 ```
 
@@ -290,7 +290,7 @@
 - **API Client**: `/utils/supabase/client.tsx`
 
 ### Environment Variables (Supabase Edge Function)
-- `SUPABASE_URL`: https://wjubqrmiomuxkcnaztdh.supabase.co
+- `SUPABASE_URL`: https://yforafidhxehaecwkird.supabase.co
 - `SUPABASE_ANON_KEY`: Public key for frontend (in config.tsx)
 - `SUPABASE_SERVICE_ROLE_KEY`: JWT token for backend operations
 - `SUPABASE_DB_URL`: Database connection string (auto-set)

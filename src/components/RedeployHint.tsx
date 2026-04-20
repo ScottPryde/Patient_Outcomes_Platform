@@ -65,7 +65,7 @@ export function RedeployHint() {
               How to Redeploy (2 min)
             </a>
             <a
-              href="https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/functions"
+              href="https://app.supabase.com/project/yforafidhxehaecwkird/functions"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700 rounded hover:bg-blue-50 dark:hover:bg-blue-900 text-sm transition-colors"

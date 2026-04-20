@@ -18,8 +18,8 @@
 
 export const config = {
   // Replace these with your actual Supabase values if auto-discovery fails:
-  supabaseUrl: 'https://wjubqrmiomuxkcnaztdh.supabase.co',
-  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndqdWJxcm1pb211eGtjbmF6dGRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5NzY5MzEsImV4cCI6MjA3OTU1MjkzMX0.ryPuRBPgB-Nz_EJdX-KypQ5L-IibQYB_gZQHF2nPfMQ',
+  supabaseUrl: 'https://yforafidhxehaecwkird.supabase.co',
+  supabaseAnonKey: 'REPLACE_WITH_NEW_ANON_KEY',
 };
 
 // Default export for compatibility

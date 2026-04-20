@@ -30,18 +30,18 @@ npm install -g supabase
 supabase login
 
 # 3. Deploy the function
-supabase functions deploy server --project-ref wjubqrmiomuxkcnaztdh
+supabase functions deploy server --project-ref yforafidhxehaecwkird
 
 # 4. Get your API keys from:
-# https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/settings/api
+# https://app.supabase.com/project/yforafidhxehaecwkird/settings/api
 
 # 5. Set secrets (replace with your actual keys)
-supabase secrets set SUPABASE_URL="https://wjubqrmiomuxkcnaztdh.supabase.co" --project-ref wjubqrmiomuxkcnaztdh
-supabase secrets set SUPABASE_ANON_KEY="your-anon-key" --project-ref wjubqrmiomuxkcnaztdh
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY="your-service-role-key" --project-ref wjubqrmiomuxkcnaztdh
+supabase secrets set SUPABASE_URL="https://yforafidhxehaecwkird.supabase.co" --project-ref yforafidhxehaecwkird
+supabase secrets set SUPABASE_ANON_KEY="your-anon-key" --project-ref yforafidhxehaecwkird
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY="your-service-role-key" --project-ref yforafidhxehaecwkird
 
 # 6. Test
-curl https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/health
+curl https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health
 ```
 
 ### STEP 2: Verify It Works ✅
@@ -116,7 +116,7 @@ Choose your guide based on how much detail you want:
 ## ❓ Common Questions
 
 ### Q: Is this the correct JWT token for my project?
-**A:** Yes! It's specifically for project ID `wjubqrmiomuxkcnaztdh`. You can verify by decoding it at jwt.io.
+**A:** Yes! It's specifically for project ID `yforafidhxehaecwkird`. You can verify by decoding it at jwt.io.
 
 ### Q: Is it safe to use this token?
 **A:** Yes, but ONLY in Edge Function secrets (server-side). Never put it in frontend code or Git.
@@ -239,9 +239,9 @@ Your Care-PRO platform includes:
 - [Project Summary](/PROJECT_SUMMARY.md) - Complete feature list
 
 ### Your Supabase Project
-- [Dashboard](https://app.supabase.com/project/wjubqrmiomuxkcnaztdh)
-- [Edge Functions](https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/functions)
-- [API Settings](https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/settings/api)
+- [Dashboard](https://app.supabase.com/project/yforafidhxehaecwkird)
+- [Edge Functions](https://app.supabase.com/project/yforafidhxehaecwkird/functions)
+- [API Settings](https://app.supabase.com/project/yforafidhxehaecwkird/settings/api)
 
 ### App Pages
 - `/diagnostics` - System health check

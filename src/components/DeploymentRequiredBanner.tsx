@@ -29,12 +29,12 @@ npm install -g supabase
 supabase login
 
 # 3. Deploy the function
-supabase functions deploy server --project-ref wjubqrmiomuxkcnaztdh
+supabase functions deploy server --project-ref yforafidhxehaecwkird
 
 # 4. Set secrets (get keys from Supabase Settings → API)
-supabase secrets set SUPABASE_URL="https://wjubqrmiomuxkcnaztdh.supabase.co" --project-ref wjubqrmiomuxkcnaztdh
-supabase secrets set SUPABASE_ANON_KEY="your-anon-key" --project-ref wjubqrmiomuxkcnaztdh
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY="your-service-role-key" --project-ref wjubqrmiomuxkcnaztdh`}</code>
+supabase secrets set SUPABASE_URL="https://yforafidhxehaecwkird.supabase.co" --project-ref yforafidhxehaecwkird
+supabase secrets set SUPABASE_ANON_KEY="your-anon-key" --project-ref yforafidhxehaecwkird
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY="your-service-role-key" --project-ref yforafidhxehaecwkird`}</code>
             </pre>
           </div>
 
@@ -49,7 +49,7 @@ supabase secrets set SUPABASE_SERVICE_ROLE_KEY="your-service-role-key" --project
             </Button>
             <Button
               variant="outline"
-              onClick={() => window.open('https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/functions', '_blank')}
+              onClick={() => window.open('https://app.supabase.com/project/yforafidhxehaecwkird/functions', '_blank')}
               className="border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/30"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
@@ -57,7 +57,7 @@ supabase secrets set SUPABASE_SERVICE_ROLE_KEY="your-service-role-key" --project
             </Button>
             <Button
               variant="outline"
-              onClick={() => window.open('https://app.supabase.com/project/wjubqrmiomuxkcnaztdh/settings/api', '_blank')}
+              onClick={() => window.open('https://app.supabase.com/project/yforafidhxehaecwkird/settings/api', '_blank')}
               className="border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/30"
             >
               <ExternalLink className="w-4 h-4 mr-2" />

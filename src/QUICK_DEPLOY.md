@@ -16,18 +16,18 @@ supabase login
 
 ### 3. Link Project
 ```bash
-supabase link --project-ref wjubqrmiomuxkcnaztdh
+supabase link --project-ref yforafidhxehaecwkird
 ```
 
 ### 4. Set Secrets
 
-Go to https://supabase.com/dashboard/project/wjubqrmiomuxkcnaztdh/settings/api
+Go to https://supabase.com/dashboard/project/yforafidhxehaecwkird/settings/api
 
 Copy your keys and run:
 
 ```bash
 # Copy URL from dashboard
-supabase secrets set SUPABASE_URL=https://wjubqrmiomuxkcnaztdh.supabase.co
+supabase secrets set SUPABASE_URL=https://yforafidhxehaecwkird.supabase.co
 
 # Copy "anon public" key from dashboard
 supabase secrets set SUPABASE_ANON_KEY=your_anon_key_here
@@ -44,7 +44,7 @@ supabase functions deploy make-server
 ## ✅ Verify
 
 ```bash
-curl https://wjubqrmiomuxkcnaztdh.supabase.co/functions/v1/make-server-e8005093/health
+curl https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health
 ```
 
 Should return:
