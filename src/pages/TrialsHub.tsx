@@ -1,342 +1,361 @@
 import { useState } from 'react';
-import { mockClinicalTrials, mockResearchItems } from '../lib/mockData';
-import { 
-  FlaskConical, 
-  Search, 
-  Filter, 
-  MapPin, 
-  Users, 
-  Calendar,
-  Heart,
-  ExternalLink,
-  TrendingUp,
-  Microscope,
-  Pill,
-  Activity,
-  Smartphone
+import { mockClinicalTrials, demoTrialStates } from '../lib/mockData';
+import { ClinicalTrial } from '../types';
+import {
+  Search, MapPin, Map, List, Bookmark, Bell, HandHeart,
+  ChevronDown, ChevronUp, CheckCircle2, ExternalLink, Filter,
 } from 'lucide-react';
+import { toast } from 'sonner';
+
+type EngagementState = 'saved' | 'following' | 'interested' | null;
+
+const PHASE_LABELS: Record<string, string> = {
+  'early-phase-1': 'Early Phase 1',
+  'phase-1': 'Phase I',
+  'phase-2': 'Phase II',
+  'phase-3': 'Phase III',
+  'phase-4': 'Phase IV',
+};
+
+const PHASE_COLOUR: Record<string, string> = {
+  'early-phase-1': 'bg-purple-100 text-purple-800',
+  'phase-1': 'bg-blue-100 text-blue-700',
+  'phase-2': 'bg-indigo-100 text-indigo-700',
+  'phase-3': 'bg-green-100 text-green-700',
+  'phase-4': 'bg-teal-100 text-teal-700',
+};
+
+const STATUS_COLOUR: Record<string, string> = {
+  recruiting: 'bg-teal-100 text-teal-700',
+  active: 'bg-blue-100 text-blue-700',
+  suspended: 'bg-amber-100 text-amber-700',
+  terminated: 'bg-red-100 text-red-700',
+  completed: 'bg-slate-100 text-slate-600',
+};
+
+// Simulated eligibility match for Anna Thompson
+const ELIGIBILITY: Record<string, { matched: number; total: number; criteria: string[] }> = {
+  'trial-walking-fshd': {
+    matched: 5,
+    total: 5,
+    criteria: ['Genetically confirmed FSHD ✓', 'Ambulatory ✓', '6MWT ≥100m ✓', 'Willing to wear monitor ✓', 'No pacemaker ✓'],
+  },
+  'trial-ace083-fshd': {
+    matched: 4,
+    total: 6,
+    criteria: ['Confirmed FSHD1 ✓', 'FVC ≥50% ✓', 'Ambulatory ✓', '6MWT ≥200m ✓', 'CSA ≥3cm² — unknown', 'No prior investigational agents — unknown'],
+  },
+};
 
 export function TrialsHub() {
-  const [activeTab, setActiveTab] = useState<'trials' | 'research'>('trials');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedPhase, setSelectedPhase] = useState('all');
-  const [selectedStatus, setSelectedStatus] = useState('all');
-  const [selectedType, setSelectedType] = useState('all');
+  const [view, setView] = useState<'list' | 'map'>('list');
+  const [search, setSearch] = useState('');
+  const [showTerminated, setShowTerminated] = useState(false);
+  const [sortBy, setSortBy] = useState<'relevance' | 'distance' | 'recent'>('relevance');
+  const [engagement, setEngagement] = useState<Record<string, EngagementState>>({ ...demoTrialStates });
+  const [expanded, setExpanded] = useState<string | null>(null);
 
-  const filteredTrials = mockClinicalTrials.filter(trial => {
-    const matchesSearch = trial.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         trial.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPhase = selectedPhase === 'all' || trial.phase === selectedPhase;
-    const matchesStatus = selectedStatus === 'all' || trial.status === selectedStatus;
-    return matchesSearch && matchesPhase && matchesStatus;
+  const visible = mockClinicalTrials.filter((t) => {
+    if (!showTerminated && t.status === 'terminated') return false;
+    if (search) {
+      const q = search.toLowerCase();
+      return t.title.toLowerCase().includes(q) || t.conditions.join(' ').toLowerCase().includes(q);
+    }
+    return true;
   });
 
-  const filteredResearch = mockResearchItems.filter(item => {
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = selectedType === 'all' || item.type === selectedType;
-    return matchesSearch && matchesType;
-  });
-
-  const getPhaseLabel = (phase: string) => {
-    const labels: Record<string, string> = {
-      'early-phase-1': 'Early Phase 1',
-      'phase-1': 'Phase 1',
-      'phase-2': 'Phase 2',
-      'phase-3': 'Phase 3',
-      'phase-4': 'Phase 4',
-    };
-    return labels[phase] || phase;
-  };
-
-  const getPhaseColor = (phase: string) => {
-    const colors: Record<string, string> = {
-      'early-phase-1': 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300',
-      'phase-1': 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300',
-      'phase-2': 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/20 dark:text-indigo-300',
-      'phase-3': 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300',
-      'phase-4': 'bg-teal-100 text-teal-800 dark:bg-teal-900/20 dark:text-teal-300',
-    };
-    return colors[phase] || 'bg-gray-100 text-gray-800';
-  };
-
-  const getStatusColor = (status: string) => {
-    const colors: Record<string, string> = {
-      'recruiting': 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300',
-      'active': 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300',
-      'completed': 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-      'suspended': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300',
-      'terminated': 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300',
-    };
-    return colors[status] || 'bg-gray-100 text-gray-800';
-  };
-
-  const getResearchTypeIcon = (type: string) => {
-    const icons: Record<string, React.ReactNode> = {
-      'publication': <Microscope className="w-5 h-5" />,
-      'device': <Activity className="w-5 h-5" />,
-      'diagnostic': <FlaskConical className="w-5 h-5" />,
-      'digital': <Smartphone className="w-5 h-5" />,
-      'drug': <Pill className="w-5 h-5" />,
-    };
-    return icons[type] || <Microscope className="w-5 h-5" />;
+  const handleEngage = (trialId: string, state: EngagementState) => {
+    setEngagement((prev) => ({ ...prev, [trialId]: prev[trialId] === state ? null : state }));
+    if (state === 'interested') {
+      toast.success('Interest flagged to the study team. They\'ll be in touch to confirm eligibility.');
+    }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 pb-8">
       {/* Header */}
-      <div>
-        <h1 className="text-gray-900 dark:text-white mb-2">Clinical Trials & Innovation</h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Discover clinical trials and cutting-edge research matching your interests
-        </p>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="text-xl font-bold text-[var(--text-primary)] mb-1">Clinical Trials</h1>
+          <p className="text-sm text-[var(--text-secondary)]">
+            FSHD-relevant trials matched to your profile · {visible.length} shown
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <ViewToggle active={view === 'list'} onClick={() => setView('list')} icon={<List className="w-4 h-4" />} label="List" />
+          <ViewToggle active={view === 'map'} onClick={() => setView('map')} icon={<Map className="w-4 h-4" />} label="Map" />
+        </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+      {/* Toolbar */}
+      <div className="flex gap-2 flex-wrap items-center">
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+          <input
+            type="search"
+            placeholder="Search trials…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 rounded-lg border border-[var(--border-token)] bg-[var(--bg-white)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--teal)]/40"
+          />
+        </div>
+        <SortSelect value={sortBy} onChange={setSortBy} />
         <button
-          onClick={() => setActiveTab('trials')}
-          className={`px-6 py-3 font-medium border-b-2 transition-colors ${
-            activeTab === 'trials'
-              ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-              : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-          }`}
+          type="button"
+          onClick={() => setShowTerminated((v) => !v)}
+          className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border transition-colors ${showTerminated ? 'bg-[var(--badge-warn-bg)] border-amber-300 text-amber-700' : 'border-[var(--border-token)] text-[var(--text-muted)] hover:border-slate-300'}`}
         >
-          <FlaskConical className="w-5 h-5 inline mr-2" />
-          Clinical Trials ({filteredTrials.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('research')}
-          className={`px-6 py-3 font-medium border-b-2 transition-colors ${
-            activeTab === 'research'
-              ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-              : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-          }`}
-        >
-          <TrendingUp className="w-5 h-5 inline mr-2" />
-          Latest Research ({filteredResearch.length})
+          <Filter className="w-3.5 h-3.5" />
+          {showTerminated ? 'Hide terminated' : 'Show terminated'}
         </button>
       </div>
 
-      {/* Search and filters */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder={`Search ${activeTab === 'trials' ? 'trials' : 'research'}...`}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700"
-            />
+      {/* Map stub */}
+      {view === 'map' && (
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-token)] rounded-[var(--radius-card)] h-64 flex items-center justify-center">
+          <div className="text-center text-[var(--text-muted)]">
+            <Map className="w-10 h-10 mx-auto mb-2 opacity-40" />
+            <p className="text-sm">Map view — Terra integration coming soon</p>
+            <p className="text-xs mt-1">Trials are located in Oxford (63 km) and London (300 km)</p>
           </div>
-
-          {activeTab === 'trials' ? (
-            <>
-              <select
-                value={selectedPhase}
-                onChange={(e) => setSelectedPhase(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
-              >
-                <option value="all">All Phases</option>
-                <option value="early-phase-1">Early Phase 1</option>
-                <option value="phase-1">Phase 1</option>
-                <option value="phase-2">Phase 2</option>
-                <option value="phase-3">Phase 3</option>
-                <option value="phase-4">Phase 4</option>
-              </select>
-
-              <select
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
-              >
-                <option value="all">All Status</option>
-                <option value="recruiting">Recruiting</option>
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
-              </select>
-            </>
-          ) : (
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700"
-            >
-              <option value="all">All Types</option>
-              <option value="publication">Publications</option>
-              <option value="device">Devices</option>
-              <option value="diagnostic">Diagnostics</option>
-              <option value="digital">Digital Health</option>
-              <option value="drug">Drugs</option>
-            </select>
-          )}
-        </div>
-      </div>
-
-      {/* Content */}
-      {activeTab === 'trials' ? (
-        <div className="space-y-4">
-          {filteredTrials.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
-              <FlaskConical className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <h3 className="font-medium mb-2">No trials found</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Try adjusting your filters or search terms
-              </p>
-            </div>
-          ) : (
-            filteredTrials.map((trial) => (
-              <div
-                key={trial.id}
-                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-blue-500 hover:shadow-lg transition-all"
-              >
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPhaseColor(trial.phase)}`}>
-                        {getPhaseLabel(trial.phase)}
-                      </span>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${getStatusColor(trial.status)}`}>
-                        {trial.status}
-                      </span>
-                    </div>
-
-                    <h3 className="font-semibold text-lg mb-2">{trial.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">{trial.description}</p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-4">
-                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                        <FlaskConical className="w-4 h-4" />
-                        <span><strong>Sponsor:</strong> {trial.sponsor}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                        <Users className="w-4 h-4" />
-                        <span><strong>Enrollment:</strong> {trial.currentEnrollment}/{trial.enrollmentTarget}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                        <MapPin className="w-4 h-4" />
-                        <span><strong>Locations:</strong> {trial.locations.length} sites</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                        <Calendar className="w-4 h-4" />
-                        <span><strong>Duration:</strong> {new Date(trial.startDate).getFullYear()} - {trial.endDate ? new Date(trial.endDate).getFullYear() : 'Ongoing'}</span>
-                      </div>
-                    </div>
-
-                    <div className="mb-3">
-                      <p className="text-sm font-medium mb-1">Conditions:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {trial.conditions.map((condition, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 text-xs rounded"
-                          >
-                            {condition}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                      <Heart className="w-4 h-4" />
-                      <span>{trial.followCount} people following</span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 lg:flex-shrink-0">
-                    <button className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                      View Details
-                      <ExternalLink className="w-4 h-4" />
-                    </button>
-                    <button className="flex items-center justify-center gap-2 px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                      <Heart className="w-4 h-4" />
-                      Follow
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredResearch.length === 0 ? (
-            <div className="col-span-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
-              <Microscope className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <h3 className="font-medium mb-2">No research found</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Try adjusting your filters or search terms
-              </p>
-            </div>
-          ) : (
-            filteredResearch.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-blue-500 hover:shadow-lg transition-all"
-              >
-                <div className="flex items-start gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-lg flex items-center justify-center flex-shrink-0">
-                    {getResearchTypeIcon(item.type)}
-                  </div>
-                  <div className="flex-1">
-                    <span className="inline-block px-2 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 text-xs rounded mb-2 capitalize">
-                      {item.type}
-                    </span>
-                    <h3 className="font-semibold">{item.title}</h3>
-                  </div>
-                </div>
-
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  {item.summary}
-                </p>
-
-                {item.authors && (
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mb-2">
-                    <strong>Authors:</strong> {item.authors.join(', ')}
-                  </p>
-                )}
-
-                {item.institution && (
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mb-3">
-                    <strong>Institution:</strong> {item.institution}
-                  </p>
-                )}
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {item.tags.slice(0, 3).map((tag, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <Heart className="w-4 h-4" />
-                    <span>{item.followCount} following</span>
-                  </div>
-                  {item.url && (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
-                    >
-                      Read More
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))
-          )}
         </div>
       )}
+
+      {/* Trial cards */}
+      {view === 'list' && (
+        <div className="space-y-4">
+          {visible.length === 0 && (
+            <p className="text-sm text-[var(--text-muted)] text-center py-8">No trials match your search.</p>
+          )}
+          {visible.map((trial) => (
+            <TrialCard
+              key={trial.id}
+              trial={trial}
+              engage={engagement[trial.id] ?? null}
+              onEngage={(state) => handleEngage(trial.id, state)}
+              eligibility={ELIGIBILITY[trial.id]}
+              isExpanded={expanded === trial.id}
+              onToggleExpand={() => setExpanded(expanded === trial.id ? null : trial.id)}
+            />
+          ))}
+        </div>
+      )}
+
+      <p className="text-xs text-[var(--text-muted)] text-center pt-2">
+        Trial data sourced from ClinicalTrials.gov · Last updated today · Eligibility pre-screening is indicative only
+      </p>
+    </div>
+  );
+}
+
+// ─── Trial card ───────────────────────────────────────────────────────────────
+
+function TrialCard({
+  trial, engage, onEngage, eligibility, isExpanded, onToggleExpand,
+}: {
+  trial: ClinicalTrial;
+  engage: EngagementState;
+  onEngage: (s: EngagementState) => void;
+  eligibility?: { matched: number; total: number; criteria: string[] };
+  isExpanded: boolean;
+  onToggleExpand: () => void;
+}) {
+  const loc = trial.locations[0];
+  const allMatched = eligibility && eligibility.matched === eligibility.total;
+
+  return (
+    <div className={`bg-[var(--bg-white)] rounded-[var(--radius-card)] border transition-colors ${engage ? 'border-[var(--teal)]/40' : 'border-[var(--border-token)]'}`}>
+      <div className="p-5">
+        {/* Top row */}
+        <div className="flex items-start gap-3 flex-wrap mb-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <StatusBadge status={trial.status} />
+              <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${PHASE_COLOUR[trial.phase] ?? 'bg-slate-100 text-slate-600'}`}>
+                {PHASE_LABELS[trial.phase] ?? trial.phase}
+              </span>
+              {eligibility && (
+                <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${allMatched ? 'bg-teal-100 text-teal-700' : 'bg-blue-50 text-blue-700'}`}>
+                  {eligibility.matched}/{eligibility.total} criteria match
+                </span>
+              )}
+            </div>
+            <h3 className="text-sm font-semibold text-[var(--text-primary)] leading-snug">{trial.title}</h3>
+            <p className="text-xs text-[var(--text-muted)] mt-1">{trial.sponsor}</p>
+          </div>
+          {/* Engagement badge */}
+          {engage && (
+            <EngageBadge state={engage} />
+          )}
+        </div>
+
+        {/* Location row */}
+        {loc && (
+          <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-3">
+            <MapPin className="w-3.5 h-3.5 shrink-0" />
+            <span>{loc.facility}, {loc.city}</span>
+            {trial.id === 'trial-walking-fshd' && <span className="text-teal-600 font-medium">· 63 km</span>}
+            {trial.id === 'trial-ace083-fshd' && <span className="text-[var(--text-muted)]">· 300 km</span>}
+          </div>
+        )}
+
+        {/* Description (truncated unless expanded) */}
+        <p className={`text-xs text-[var(--text-secondary)] leading-relaxed ${isExpanded ? '' : 'line-clamp-2'}`}>
+          {trial.description}
+        </p>
+
+        {/* Expanded detail */}
+        {isExpanded && (
+          <div className="mt-4 space-y-4">
+            {/* Eligibility */}
+            {eligibility && (
+              <div>
+                <p className="text-xs font-semibold text-[var(--text-primary)] mb-2">Eligibility screening</p>
+                <ul className="space-y-1">
+                  {eligibility.criteria.map((c) => (
+                    <li key={c} className={`text-xs flex items-start gap-1.5 ${c.includes('✓') ? 'text-teal-700' : 'text-[var(--text-muted)]'}`}>
+                      <CheckCircle2 className={`w-3 h-3 mt-0.5 shrink-0 ${c.includes('✓') ? 'text-teal-500' : 'text-slate-300'}`} />
+                      {c.replace(' ✓', '')}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Enrolment stats */}
+            <div className="grid grid-cols-3 gap-3">
+              <Stat label="Target enrolment" value={trial.enrollmentTarget.toString()} />
+              <Stat label="Currently enrolled" value={trial.currentEnrollment.toString()} />
+              <Stat label="Start date" value={trial.startDate} />
+            </div>
+
+            {/* Primary outcome */}
+            <div>
+              <p className="text-xs font-semibold text-[var(--text-primary)] mb-1">Primary outcome</p>
+              <p className="text-xs text-[var(--text-secondary)]">{trial.primaryOutcome}</p>
+            </div>
+
+            {/* Contact */}
+            {loc?.contactEmail && (
+              <p className="text-xs text-[var(--text-muted)]">
+                Contact: <a href={`mailto:${loc.contactEmail}`} className="text-[var(--blue)] hover:underline">{loc.contactEmail}</a>
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Actions row */}
+        <div className="flex items-center justify-between mt-4 pt-3 border-t border-[var(--border-token)] flex-wrap gap-2">
+          <button type="button" onClick={onToggleExpand} className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] flex items-center gap-1">
+            {isExpanded ? <><ChevronUp className="w-3.5 h-3.5" /> Less detail</> : <><ChevronDown className="w-3.5 h-3.5" /> More detail</>}
+          </button>
+          <div className="flex gap-2">
+            <EngageButton
+              icon={<Bookmark className="w-3.5 h-3.5" />}
+              label="Save"
+              active={engage === 'saved'}
+              onClick={() => onEngage('saved')}
+            />
+            <EngageButton
+              icon={<Bell className="w-3.5 h-3.5" />}
+              label="Follow"
+              active={engage === 'following'}
+              onClick={() => onEngage('following')}
+            />
+            {trial.status === 'recruiting' && (
+              <button
+                type="button"
+                onClick={() => onEngage('interested')}
+                className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${engage === 'interested' ? 'bg-[var(--teal)] text-white' : 'bg-[var(--badge-teal-bg)] text-[var(--teal)] hover:bg-[var(--teal)] hover:text-white'}`}
+              >
+                <HandHeart className="w-3.5 h-3.5" />
+                Express interest
+              </button>
+            )}
+          </div>
+        </div>
+
+        {engage === 'interested' && trial.status === 'recruiting' && (
+          <div className="mt-3 p-3 bg-[var(--badge-teal-bg)] rounded-lg text-xs text-teal-800 flex items-start gap-2">
+            <CheckCircle2 className="w-3.5 h-3.5 text-teal-500 mt-0.5 shrink-0" />
+            Interest flagged. The study team at {loc?.city} will contact you to confirm eligibility. This does <strong>not</strong> enrol you in the trial.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Sub-components ────────────────────────────────────────────────────────────
+
+function StatusBadge({ status }: { status: string }) {
+  return (
+    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded capitalize ${STATUS_COLOUR[status] ?? 'bg-slate-100 text-slate-600'}`}>
+      {status}
+    </span>
+  );
+}
+
+function EngageBadge({ state }: { state: EngagementState }) {
+  if (!state) return null;
+  const map: Record<string, string> = {
+    saved: '★ Saved',
+    following: '🔔 Following',
+    interested: '✋ Interested',
+  };
+  return (
+    <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-[var(--badge-teal-bg)] text-[var(--teal)] shrink-0">
+      {map[state]}
+    </span>
+  );
+}
+
+function EngageButton({
+  icon, label, active, onClick,
+}: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${active ? 'bg-[var(--badge-navy-bg)] border-[var(--blue)] text-[var(--blue)]' : 'border-[var(--border-token)] text-[var(--text-muted)] hover:border-slate-300'}`}
+    >
+      {icon}{label}
+    </button>
+  );
+}
+
+function ViewToggle({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border transition-colors ${active ? 'bg-[var(--navy)] text-white border-[var(--navy)]' : 'border-[var(--border-token)] text-[var(--text-muted)] hover:border-slate-300'}`}
+    >
+      {icon}{label}
+    </button>
+  );
+}
+
+function SortSelect({ value, onChange }: { value: string; onChange: (v: any) => void }) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="text-xs px-3 py-2 rounded-lg border border-[var(--border-token)] bg-[var(--bg-white)] text-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--teal)]/40"
+      aria-label="Sort trials"
+    >
+      <option value="relevance">Sort: Relevance</option>
+      <option value="distance">Sort: Distance</option>
+      <option value="recent">Sort: Most recent</option>
+    </select>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="bg-[var(--bg-surface)] rounded-lg p-2.5 text-center">
+      <p className="text-xs text-[var(--text-muted)] mb-0.5">{label}</p>
+      <p className="text-sm font-semibold text-[var(--text-primary)]">{value}</p>
     </div>
   );
 }

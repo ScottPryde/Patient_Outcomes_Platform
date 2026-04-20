@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole, LinkedPatient } from '../types';
 import { apiRequest, setSessionToken, getSessionToken } from '../utils/supabase/client';
 
@@ -26,13 +26,9 @@ interface RegisterData {
   phone?: string;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Diagnostic: module initialization timestamp
-console.log('[AuthContext] module init:', new Date().toISOString());
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  console.log('[AuthContext] AuthProvider render');
   const [user, setUser] = useState<User | null>(null);
   const [linkedPatients, setLinkedPatients] = useState<LinkedPatient[]>([]);
   const [activePatientId, setActivePatientId] = useState<string | null>(null);

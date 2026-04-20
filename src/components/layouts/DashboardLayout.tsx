@@ -23,7 +23,6 @@ import { useState } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { NotificationPanel } from '../notifications/NotificationPanel';
 import { PatientSwitcher } from '../caregiver/PatientSwitcher';
-import { InteractiumLogo } from '../InteractiumLogo';
 
 export function DashboardLayout() {
   const { user, logout, activePatient } = useAuth();
@@ -38,15 +37,16 @@ export function DashboardLayout() {
 
   // Primary navigation – key flows grouped under the main dashboard
   const navigation = [
-    { name: 'My Observations', href: '/observations', icon: ClipboardList },
-    { name: 'My Evidence', href: '/', icon: LayoutDashboard },
-    { name: 'Questionnaires', href: '/questionnaires', icon: ClipboardList },
+    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+    // "Under" Dashboard: information and consent flows
+    { name: 'Information Hub', href: '/education', icon: BookOpen },
+    { name: 'Consent & Privacy', href: '/consent', icon: Shield },
+    // Other core areas
+    { name: 'Observations', href: '/questionnaires', icon: ClipboardList },
     { name: 'Care Group', href: '/care-group', icon: User },
     { name: 'Results', href: '/results', icon: BarChart3 },
     { name: 'Trials & Innovation', href: '/trials', icon: FlaskConical },
     { name: 'Tags & Interests', href: '/tags', icon: Tags },
-    { name: 'Information Hub', href: '/education', icon: BookOpen },
-    { name: 'Consent & Privacy', href: '/consent', icon: Shield },
     { name: 'Profile & Settings', href: '/profile', icon: User },
   ];
 
@@ -86,7 +86,10 @@ export function DashboardLayout() {
             </button>
             
             <Link to="/" className="flex items-center gap-2">
-              <span className="font-bold text-2xl text-blue-600 dark:text-blue-400">interactium</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">P</span>
+              </div>
+              <span className="font-semibold text-lg hidden sm:inline">PRO Platform</span>
             </Link>
 
             {/* Patient switcher for caregivers */}

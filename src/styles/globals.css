@@ -3,79 +3,79 @@
 :root {
   --font-size: 16px;
   --background: #ffffff;
-  --foreground: #0f172a;
+  --foreground: oklch(0.145 0 0);
   --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #0052cc;
-  --primary-foreground: #ffffff;
-  --secondary: #e0e7ff;
-  --secondary-foreground: #0052cc;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #dbeafe;
-  --accent-foreground: #0052cc;
-  --destructive: #ef4444;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #030213;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #d4183d;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
+  --border: rgba(0, 0, 0, 0.1);
   --input: transparent;
-  --input-background: #f8fafc;
-  --switch-background: #cbd5e1;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #0052cc;
-  --chart-1: #0052cc;
-  --chart-2: #06b6d4;
-  --chart-3: #06b6d4;
-  --chart-4: #6366f1;
-  --chart-5: #8b5cf6;
-  --radius: 0.625rem;
-  --sidebar: #f8fafc;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #0052cc;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eff6ff;
-  --sidebar-accent-foreground: #0052cc;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #0052cc;
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.3125rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #030213;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #f1f5f9;
-  --card: #1e293b;
-  --card-foreground: #f1f5f9;
-  --popover: #1e293b;
-  --popover-foreground: #f1f5f9;
-  --primary: #0052cc;
-  --primary-foreground: #ffffff;
-  --secondary: #1e3a8a;
-  --secondary-foreground: #e0e7ff;
-  --muted: #334155;
-  --muted-foreground: #94a3b8;
-  --accent: #1e3a8a;
-  --accent-foreground: #60a5fa;
-  --destructive: #f87171;
-  --destructive-foreground: #7f1d1d;
-  --border: #334155;
-  --input: #1e293b;
-  --ring: #0052cc;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --chart-1: #0052cc;
-  --chart-2: #06b6d4;
-  --chart-3: #10b981;
-  --chart-4: #6366f1;
-  --chart-5: #8b5cf6;
-  --sidebar: #1e293b;
-  --sidebar-foreground: #f1f5f9;
-  --sidebar-primary: #0052cc;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e3a8a;
-  --sidebar-accent-foreground: #60a5fa;
-  --sidebar-border: #334155;
-  --sidebar-ring: #0052cc;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
 }
 
 @theme inline {
@@ -186,4 +186,60 @@
 
 html {
   font-size: var(--font-size);
+}
+
+/* Setup progress bar — avoids inline style for dynamic width */
+progress.setup-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 9999px;
+  overflow: hidden;
+  display: block;
+  background: var(--bg-surface);
+}
+progress.setup-progress::-webkit-progress-bar {
+  background: var(--bg-surface);
+  border-radius: 9999px;
+}
+progress.setup-progress::-webkit-progress-value {
+  background: var(--teal);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+progress.setup-progress::-moz-progress-bar {
+  background: var(--teal);
+  border-radius: 9999px;
+}
+
+/* AG Grid — Interactium theme overrides */
+.ag-theme-alpine {
+  --ag-header-background-color: #1e293b;
+  --ag-header-foreground-color: #f8fafc;
+  --ag-header-column-separator-color: rgba(255,255,255,0.15);
+  --ag-odd-row-background-color: #f8fafc;
+  --ag-row-hover-color: #e0f7f5;
+  --ag-selected-row-background-color: #e0f7f5;
+  --ag-border-color: #e2e8f0;
+  --ag-row-border-color: #f1f5f9;
+  --ag-font-size: 13px;
+  --ag-font-family: 'DM Sans', sans-serif;
+  --ag-cell-horizontal-padding: 12px;
+  --ag-borders: solid 1px;
+  --ag-borders-critical: solid 1px;
+  --ag-wrapper-border-radius: 12px;
+  --ag-filter-tool-panel-header-height: 28px;
+  --ag-tab-min-width: 220px;
+}
+.ag-theme-alpine .ag-header-cell-label { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+.ag-theme-alpine .ag-paging-panel { background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b; }
+
+/* Accessibility — large text mode */
+.large-text { font-size: 112%; }
+.large-text .text-xs, .large-text [class*="text-xs"] { font-size: 0.85rem; }
+.large-text .text-sm, .large-text [class*="text-sm"] { font-size: 0.95rem; }
+
+/* Accessibility — reduced motion */
+.reduce-motion * {
+  transition: none !important;
+  animation: none !important;
 }

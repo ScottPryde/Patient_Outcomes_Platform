@@ -9,7 +9,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { CuriosityTracker } from '../components/curiosity/CuriosityTracker';
 import { apiRequest } from '../utils/supabase/client';
 import { useAuth } from '../contexts/AuthContext';
-import { toast } from '../components/ui/sonner';
+import { toast } from 'sonner';
+
+interface QuizQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: number;
+}
+
+type ModuleSection =
+  | { type: 'text'; title: string; content: string }
+  | { type: 'quiz'; title: string; questions?: QuizQuestion[] }
+  | { type: 'interactive'; title: string; content: string };
 
 interface EducationModule {
   id: string;
@@ -21,6 +32,7 @@ interface EducationModule {
   points: number;
   tags: string[];
   nextModules?: string[];
+  content?: { sections?: ModuleSection[] };
 }
 
 interface ModuleCompletion {

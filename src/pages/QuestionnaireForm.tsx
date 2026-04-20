@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { mockQuestionnaires } from '../lib/mockData';
 import { Question, QuestionAnswer } from '../types';
-import { toast } from '../components/ui/sonner';
+import { toast } from 'sonner';
 import { ArrowLeft, ArrowRight, Save, Send, AlertCircle } from 'lucide-react';
 
 export function QuestionnaireForm() {
@@ -20,7 +20,7 @@ export function QuestionnaireForm() {
   useEffect(() => {
     if (!questionnaire) {
       toast.error('Questionnaire not found');
-      navigate('/questionnaires');
+      navigate('/health/prom-history');
     }
   }, [questionnaire, navigate]);
 
@@ -250,7 +250,7 @@ export function QuestionnaireForm() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <button
-          onClick={() => navigate('/questionnaires')}
+          onClick={() => navigate('/health/prom-history')}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -274,7 +274,7 @@ export function QuestionnaireForm() {
       )}
 
       {/* Progress bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium">
             Question {currentQuestionIndex + 1} of {totalQuestions}
@@ -292,7 +292,7 @@ export function QuestionnaireForm() {
       </div>
 
       {/* Question card */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-8">
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-2">
             {currentQuestion.text}
@@ -309,7 +309,7 @@ export function QuestionnaireForm() {
       </div>
 
       {/* Navigation buttons */}
-      <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+      <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
         <button
           onClick={handlePrevious}
           disabled={currentQuestionIndex === 0}

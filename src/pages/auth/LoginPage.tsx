@@ -1,123 +1,106 @@
-import { useState, FormEvent, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { toast } from '../../components/ui/sonner';
-import { Eye, EyeOff, LogIn } from 'lucide-react';
-import { BackendConfigBanner } from '../../components/BackendConfigBanner';
-import { RedeployHint } from '../../components/RedeployHint';
-import { InteractiumLogo } from '../../components/InteractiumLogo';
+import { toast } from 'sonner';
+import { Eye, EyeOff, Play, Globe, Users, FlaskConical, ShieldCheck } from 'lucide-react';
+
+const DEMO_EMAIL = 'anna.thompson@demo.interactium.io';
+const DEMO_PASSWORD = 'Carepro1234!';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSeeding, setIsSeeding] = useState(false);
-  const [showFirstTimeHelper, setShowFirstTimeHelper] = useState(false);
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check if this is first visit
-    const hasVisited = localStorage.getItem('care-pro-visited');
-    if (!hasVisited) {
-      setShowFirstTimeHelper(true);
-      localStorage.setItem('care-pro-visited', 'true');
-    }
-  }, []);
-
-  const handleSeedDatabase = async () => {
-    setIsSeeding(true);
-    try {
-      const response = await fetch('https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/seed', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      
-      if (response.ok) {
-        toast.success('Demo users created! You can now login with any demo account.');
-      } else {
-        const error = await response.json();
-        toast.error(`Seed failed: ${error.error || 'Unknown error'}`);
-      }
-    } catch (error) {
-      console.error('Seed error:', error);
-      toast.error('Failed to create demo users. Please try creating an account manually.');
-    } finally {
-      setIsSeeding(false);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!email || !password) {
       toast.error('Please fill in all fields');
       return;
     }
-
     setIsLoading(true);
-    
     try {
       await login(email, password);
-      toast.success('Welcome back!');
       navigate('/');
     } catch (error: any) {
-      console.error('Login error:', error);
-      
-      // Trigger error event for banner
-      if (error.message.includes('401')) {
-        window.dispatchEvent(new CustomEvent('auth-error', { 
-          detail: { error: error.message } 
-        }));
-        localStorage.setItem('last-auth-error', error.message);
-        localStorage.setItem('last-auth-error-time', Date.now().toString());
-      }
-      
-      // Provide specific error messages
-      if (error.message.includes('401')) {
-        toast.error('❌ Backend Configuration Error', {
-          description: 'SUPABASE_SERVICE_ROLE_KEY not set correctly. See the red banner above for instructions.',
-          duration: 8000,
-        });
-      } else if (error.message.includes('Invalid')) {
-        toast.error('Invalid email or password. Please check your credentials or create an account.');
-      } else {
-        toast.error(error.message || 'Failed to login. Please try again.');
-      }
+      toast.error(error.message || 'Sign in failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Demo accounts that are actually seeded by the backend (see seed.tsx)
-  const demoUsers = [
-    { email: 'patient@carepro.com', role: 'Patient' },
-    { email: 'caregiver@carepro.com', role: 'Caregiver' },
-    { email: 'clinician@carepro.com', role: 'Clinician' },
-    { email: 'researcher@carepro.com', role: 'Researcher' },
-    { email: 'admin@carepro.com', role: 'Administrator' },
-  ];
+  const handleDemoLogin = async () => {
+    setIsDemoLoading(true);
+    try {
+      await login(DEMO_EMAIL, DEMO_PASSWORD);
+      toast.success('Welcome, Anna! You\'re exploring the demo.');
+      navigate('/dashboard');
+    } catch (error: any) {
+      toast.error('Demo sign-in failed. Please check that the demo account exists in Supabase Auth.');
+    } finally {
+      setIsDemoLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 p-4">
-      <BackendConfigBanner />
-      <RedeployHint />
-      <div className="w-full max-w-md">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-blue-100 dark:border-slate-700">
-          {/* Logo and title */}
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Welcome Back</h1>
-            <p className="text-slate-600 dark:text-slate-400">
-              Sign in to your interactium account
-            </p>
+    <div className="min-h-screen flex flex-col bg-[linear-gradient(135deg,#0f172a_0%,#1e3a5f_60%,#0b4d43_100%)]">
+      {/* Trust stats bar */}
+      <div className="w-full border-b border-white/10 py-4 px-4">
+        <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-6 md:gap-12">
+          <TrustStat icon={<Users className="w-4 h-4" />} value="65,750+" label="patients enrolled" />
+          <TrustStat icon={<FlaskConical className="w-4 h-4" />} value="44" label="active studies" />
+          <TrustStat icon={<Globe className="w-4 h-4" />} value="40+" label="countries" />
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
+        {/* Hero copy */}
+        <div className="text-center mb-10 max-w-lg">
+          <div className="inline-flex items-center gap-2 bg-teal-500/20 border border-teal-400/30 text-teal-300 text-xs font-medium px-3 py-1 rounded-full mb-5">
+            TREAT-NMD Partner Platform
+          </div>
+          <h1 className="text-white text-3xl md:text-4xl font-bold leading-tight mb-3">
+            Your condition.<br />Your voice. Your data.
+          </h1>
+          <p className="text-slate-300 text-base">
+            The Interactium / PaLaDín platform for neuromuscular disease patients — tracking outcomes, contributing to research, and shaping the treatments of tomorrow.
+          </p>
+        </div>
+
+        {/* Login card */}
+        <div className="w-full max-w-md bg-white/5 backdrop-blur border border-white/10 rounded-lg p-8 shadow-2xl">
+
+          {/* Demo button — primary CTA */}
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            disabled={isDemoLoading}
+            className="w-full flex items-center justify-center gap-2.5 bg-teal-500/20 hover:bg-teal-500/30 border border-teal-400/50 text-teal-200 font-semibold py-3 rounded-lg transition-all mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isDemoLoading ? (
+              <span className="w-4 h-4 border-2 border-teal-300/60 border-t-teal-200 rounded-full animate-spin" />
+            ) : (
+              <Play className="w-4 h-4 fill-current" />
+            )}
+            Demo — sign in as Anna Thompson
+          </button>
+
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="text-white/30 text-xs">or sign in with your account</span>
+            <div className="flex-1 h-px bg-white/10" />
           </div>
 
-          {/* Login form */}
+          {/* Email / password form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Email Address
+              <label htmlFor="email" className="block text-sm font-medium text-white/70 mb-1.5">
+                Email
               </label>
               <input
                 id="email"
@@ -125,13 +108,14 @@ export function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400"
-                placeholder="you@example.com"
+                autoComplete="email"
+                className="w-full px-4 py-2.5 bg-white/10 border border-white/20 text-white placeholder-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400/60 focus:border-transparent text-sm"
+                placeholder="you@email.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-white/70 mb-1.5">
                 Password
               </label>
               <div className="relative">
@@ -141,103 +125,70 @@ export function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 pr-10"
+                  autoComplete="current-password"
+                  className="w-full px-4 py-2.5 bg-white/10 border border-white/20 text-white placeholder-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400/60 focus:border-transparent text-sm pr-10"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
-                />
-                <span className="ml-2 text-sm text-slate-600 dark:text-slate-400">
-                  Remember me
-                </span>
-              </label>
-              <a href="#" className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-                Forgot password?
-              </a>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full bg-white/90 hover:bg-white text-slate-900 font-semibold py-2.5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span className="inline-flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-slate-400 border-t-slate-700 rounded-full animate-spin" />
+                  Signing in…
+                </span>
               ) : (
-                <>
-                  <LogIn className="w-5 h-5" />
-                  Sign In
-                </>
+                'Sign in'
               )}
             </button>
           </form>
 
-          {/* Demo credentials */}
-          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-2">
-              💡 Demo Accounts Available
-            </p>
-            <p className="text-xs text-blue-800 dark:text-blue-300 mb-3">
-              Click any email below, then use password:{' '}
-              <code className="bg-blue-100 dark:bg-blue-800 px-2 py-0.5 rounded">
-                CarePRO2024!
-              </code>
-            </p>
-            <div className="space-y-1">
-              {demoUsers.map((user) => (
-                <button
-                  key={user.email}
-                  onClick={() => {
-                    setEmail(user.email);
-                    setPassword('CarePRO2024!');
-                  }}
-                  className="block w-full text-left text-sm text-blue-700 dark:text-blue-300 hover:underline px-2 py-1 rounded hover:bg-blue-100 dark:hover:bg-blue-800/30"
-                >
-                  <span className="font-medium">{user.role}:</span> {user.email}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Register link */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Don't have an account?{' '}
-              <Link to="/register" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 font-medium">
-                Create Account
+          <div className="mt-5 text-center">
+            <p className="text-white/40 text-xs">
+              New patient?{' '}
+              <Link to="/register" className="text-teal-400 hover:text-teal-300">
+                Create an account
               </Link>
             </p>
           </div>
-
-          {/* Diagnostics link */}
-          <div className="mt-2 text-center">
-            <Link 
-              to="/diagnostics" 
-              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-300 underline"
-            >
-              Having trouble? Run system diagnostics
-            </Link>
-          </div>
         </div>
 
-        {/* WCAG compliance note */}
-        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4">
-          This platform is WCAG 2.2 AA compliant
-        </p>
+        {/* Legal footer */}
+        <div className="mt-8 max-w-md text-center">
+          <div className="flex items-center justify-center gap-1.5 text-white/30 text-xs mb-2">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>GDPR Article 9 · NHS DSPT · AES-256-GCM encrypted · Vault-secured</span>
+          </div>
+          <p className="text-white/20 text-xs">
+            © 2026 Interactium Ltd · Registered in England · ICO registration ZB812043
+          </p>
+          <Link to="/diagnostics" className="text-white/20 hover:text-white/40 text-xs underline mt-1 inline-block">
+            System diagnostics
+          </Link>
+        </div>
       </div>
+    </div>
+  );
+}
+
+function TrustStat({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
+  return (
+    <div className="flex items-center gap-2 text-white/70">
+      <span className="text-teal-400">{icon}</span>
+      <span className="font-bold text-white text-sm">{value}</span>
+      <span className="text-xs">{label}</span>
     </div>
   );
 }

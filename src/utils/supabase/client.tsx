@@ -88,13 +88,12 @@ export async function apiRequest(
   const sessionToken = getSessionToken();
   const authToken = sessionToken || anonKey || null;
 
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    ...options.headers,
-  };
-
+  const headers = new Headers(options.headers as HeadersInit | undefined);
+  if (!headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
   if (authToken) {
-    headers['Authorization'] = `Bearer ${authToken}`;
+    headers.set('Authorization', `Bearer ${authToken}`);
   }
   
   const response = await fetch(url, {

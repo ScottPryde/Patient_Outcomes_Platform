@@ -78,7 +78,7 @@ const steps = [
       </div>
     ),
     action: 'View Questionnaires',
-    link: '/questionnaires',
+    link: '/health/prom-history',
   },
   {
     title: 'Explore Clinical Trials',

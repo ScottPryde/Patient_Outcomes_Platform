@@ -1,13 +1,34 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { User, Mail, Phone, Calendar, Shield, Bell, Accessibility, Palette, Save } from 'lucide-react';
-import { toast } from '../components/ui/sonner';
+import { User, Mail, Phone, Calendar, Shield, Bell, Accessibility, Palette, Save, Camera } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function Profile() {
   const { user, updateUser } = useAuth();
   const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState('personal');
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('profile_photo');
+    if (saved) setPhotoUrl(saved);
+  }, []);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const dataUrl = ev.target?.result as string;
+      setPhotoUrl(dataUrl);
+      localStorage.setItem('profile_photo', dataUrl);
+      toast.success('Photo updated');
+    };
+    reader.readAsDataURL(file);
+  };
+
   const [formData, setFormData] = useState({
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
@@ -39,7 +60,7 @@ export function Profile() {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="flex border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -66,15 +87,41 @@ export function Profile() {
           {activeTab === 'personal' && (
             <div className="space-y-6">
               <div className="flex items-center gap-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-3xl font-bold">
-                    {user.firstName.charAt(0)}{user.lastName.charAt(0)}
-                  </span>
+                <div className="relative group">
+                  {photoUrl ? (
+                    <img src={photoUrl} alt="Profile" className="w-24 h-24 rounded-full object-cover" />
+                  ) : (
+                    <div className="w-24 h-24 bg-[var(--purple)] rounded-full flex items-center justify-center">
+                      <span className="text-white text-3xl font-bold">
+                        {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                      </span>
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                    aria-label="Change profile photo"
+                  >
+                    <Camera className="w-6 h-6 text-white" />
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    title="Upload profile photo"
+                    className="hidden"
+                    onChange={handlePhotoChange}
+                  />
                 </div>
                 <div className="flex-1">
                   <h2 className="text-xl font-semibold">{user.firstName} {user.lastName}</h2>
                   <p className="text-gray-600 dark:text-gray-400 capitalize">{user.role}</p>
-                  <button className="mt-2 text-sm text-blue-600 hover:text-blue-700">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="mt-2 text-sm text-[var(--teal)] hover:underline"
+                  >
                     Change Photo
                   </button>
                 </div>

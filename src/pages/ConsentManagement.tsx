@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useConsent } from "../contexts/ConsentContext";
 import { useAuth } from "../contexts/AuthContext";
 import {
@@ -8,9 +9,126 @@ import {
   Clock,
   FileText,
   AlertCircle,
+  ChevronDown,
+  ChevronUp,
+  Download,
+  Trash2,
+  ArrowRightLeft,
+  Pencil,
+  History,
 } from "lucide-react";
-import { toast } from '../components/ui/sonner';
+import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
+
+const AUDIT_TRAIL = [
+  { date: '2026-01-15', action: 'Accepted', what: 'TREAT-NMD Research Registry consent', actor: 'You' },
+  { date: '2025-09-03', action: 'Accepted', what: 'Platform Terms & Data Processing consent', actor: 'You' },
+  { date: '2025-09-03', action: 'Declined', what: 'Optional analytics & improvement data sharing', actor: 'You' },
+];
+
+function GdprRightsSection() {
+  const [open, setOpen] = useState(false);
+  const [erasureOpen, setErasureOpen] = useState(false);
+  const [erasureReason, setErasureReason] = useState('');
+
+  const handleErasureSubmit = () => {
+    if (!erasureReason.trim()) return;
+    toast.success('Erasure request submitted. The registry team will respond within 30 days.');
+    setErasureReason('');
+    setErasureOpen(false);
+  };
+
+  return (
+    <div className="bg-[var(--bg-white)] rounded-[var(--radius-card)] border border-[var(--border-token)] overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[var(--bg-surface)] transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          <Shield className="w-4 h-4 text-[var(--teal)]" />
+          <span className="text-sm font-semibold text-[var(--text-primary)]">Your GDPR rights</span>
+          <span className="text-[10px] bg-[var(--state-info-bg)] text-[var(--state-info-text)] px-1.5 py-0.5 rounded font-medium">4 rights</span>
+        </div>
+        {open ? <ChevronUp className="w-4 h-4 text-[var(--text-muted)]" /> : <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />}
+      </button>
+
+      {open && (
+        <div className="px-5 pb-5 border-t border-[var(--border-token)] space-y-3 pt-4">
+          <p className="text-xs text-[var(--text-muted)] mb-4">Under the UK GDPR and EU GDPR you have the following rights regarding your health data held in Interactium and TREAT-NMD.</p>
+
+          {/* Art. 15 — Access */}
+          <div className="flex items-start gap-3 p-3 rounded-lg border border-[var(--border-token)] bg-[var(--bg-surface)]">
+            <div className="w-8 h-8 rounded-lg bg-[var(--badge-teal-bg)] flex items-center justify-center text-[var(--teal)] shrink-0">
+              <Download className="w-3.5 h-3.5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-[var(--text-primary)]">Right of access <span className="text-[10px] font-normal text-[var(--text-muted)]">Art. 15</span></p>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5 mb-2">Download a copy of all health data we hold about you.</p>
+              <Link to="/health/export" className="text-xs text-[var(--teal)] font-medium hover:underline">Go to Data Export →</Link>
+            </div>
+          </div>
+
+          {/* Art. 17 — Erasure */}
+          <div className="rounded-lg border border-[var(--border-token)] overflow-hidden">
+            <div className="flex items-start gap-3 p-3 bg-[var(--bg-surface)]">
+              <div className="w-8 h-8 rounded-lg bg-[var(--state-error-bg)] flex items-center justify-center text-[var(--state-error-text)] shrink-0">
+                <Trash2 className="w-3.5 h-3.5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-[var(--text-primary)]">Right to erasure <span className="text-[10px] font-normal text-[var(--text-muted)]">Art. 17</span></p>
+                <p className="text-xs text-[var(--text-secondary)] mt-0.5 mb-2">Request deletion of your personal data from the registry.</p>
+                <button type="button" onClick={() => setErasureOpen((v) => !v)}
+                  className="text-xs text-[var(--state-error-text)] font-medium hover:underline">
+                  {erasureOpen ? 'Close form' : 'Submit erasure request →'}
+                </button>
+              </div>
+            </div>
+            {erasureOpen && (
+              <div className="px-4 pb-4 pt-3 border-t border-[var(--border-token)] space-y-3">
+                <p className="text-xs text-[var(--text-muted)]">Note: Erasing your data will remove it from research use. It cannot be undone. Your clinical care is not affected.</p>
+                <label className="block">
+                  <span className="text-xs font-medium text-[var(--text-primary)] block mb-1">Reason for erasure request</span>
+                  <textarea value={erasureReason} onChange={(e) => setErasureReason(e.target.value)}
+                    rows={2} placeholder="Please briefly describe your reason..."
+                    className="w-full text-xs px-3 py-2 rounded-lg border border-[var(--border-token)] bg-[var(--bg-white)] focus:outline-none focus:ring-2 focus:ring-[var(--teal)]/40 resize-none" />
+                </label>
+                <button type="button" onClick={handleErasureSubmit}
+                  className="text-xs bg-[var(--state-error-text)] text-white px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                  Submit request
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Art. 20 — Portability */}
+          <div className="flex items-start gap-3 p-3 rounded-lg border border-[var(--border-token)] bg-[var(--bg-surface)]">
+            <div className="w-8 h-8 rounded-lg bg-[var(--badge-vault-bg)] flex items-center justify-center text-[var(--purple)] shrink-0">
+              <ArrowRightLeft className="w-3.5 h-3.5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-[var(--text-primary)]">Right to data portability <span className="text-[10px] font-normal text-[var(--text-muted)]">Art. 20</span></p>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5 mb-2">Export your data in machine-readable FHIR R4 format for transfer to another system.</p>
+              <Link to="/health/export" className="text-xs text-[var(--teal)] font-medium hover:underline">Export as FHIR R4 →</Link>
+            </div>
+          </div>
+
+          {/* Art. 16 — Rectification */}
+          <div className="flex items-start gap-3 p-3 rounded-lg border border-[var(--border-token)] bg-[var(--bg-surface)]">
+            <div className="w-8 h-8 rounded-lg bg-[var(--badge-navy-bg)] flex items-center justify-center text-[var(--blue)] shrink-0">
+              <Pencil className="w-3.5 h-3.5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-[var(--text-primary)]">Right to rectification <span className="text-[10px] font-normal text-[var(--text-muted)]">Art. 16</span></p>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5 mb-2">Correct inaccurate personal data held about you in your profile.</p>
+              <Link to="/account" className="text-xs text-[var(--teal)] font-medium hover:underline">Go to Profile →</Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function ConsentManagement() {
   const {
@@ -139,7 +257,7 @@ export function ConsentManagement() {
         </p>
       </div>
 
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
         <div className="flex items-start gap-3">
           <Shield className="w-8 h-8 text-blue-600 flex-shrink-0 mt-1" />
           <div className="flex-1">
@@ -174,7 +292,7 @@ export function ConsentManagement() {
             return (
               <div
                 key={consent.id}
-                className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6"
+                className="bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 p-6"
               >
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0">
@@ -289,7 +407,7 @@ export function ConsentManagement() {
             return (
               <div
                 key={consent.id}
-                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6"
               >
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0">
@@ -376,10 +494,47 @@ export function ConsentManagement() {
         </div>
       </div>
 
+      {/* GDPR Rights */}
+      <GdprRightsSection />
+
+      {/* Audit trail */}
+      <div className="bg-[var(--bg-white)] rounded-[var(--radius-card)] border border-[var(--border-token)] p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <History className="w-4 h-4 text-[var(--text-muted)]" />
+          <h2 className="text-sm font-semibold text-[var(--text-primary)]">Consent change history</h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-b border-[var(--border-token)]">
+                <th className="text-left py-2 pr-4 font-semibold text-[var(--text-muted)] uppercase tracking-wider">Date</th>
+                <th className="text-left py-2 pr-4 font-semibold text-[var(--text-muted)] uppercase tracking-wider">Action</th>
+                <th className="text-left py-2 pr-4 font-semibold text-[var(--text-muted)] uppercase tracking-wider">Consent</th>
+                <th className="text-left py-2 font-semibold text-[var(--text-muted)] uppercase tracking-wider">By</th>
+              </tr>
+            </thead>
+            <tbody>
+              {AUDIT_TRAIL.map((row, i) => (
+                <tr key={i} className="border-b border-[var(--border-light)] last:border-0">
+                  <td className="py-2.5 pr-4 text-[var(--text-muted)] whitespace-nowrap">{new Date(row.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                  <td className="py-2.5 pr-4">
+                    <span className={`px-1.5 py-0.5 rounded font-medium ${row.action === 'Accepted' ? 'bg-[var(--priority-low-bg)] text-[var(--priority-low-text)]' : 'bg-[var(--state-error-bg)] text-[var(--state-error-text)]'}`}>
+                      {row.action}
+                    </span>
+                  </td>
+                  <td className="py-2.5 pr-4 text-[var(--text-secondary)]">{row.what}</td>
+                  <td className="py-2.5 text-[var(--text-muted)]">{row.actor}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* Withdraw dialog */}
       {showWithdrawDialog && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
             <h3 className="font-semibold mb-4">
               Withdraw Consent
             </h3>

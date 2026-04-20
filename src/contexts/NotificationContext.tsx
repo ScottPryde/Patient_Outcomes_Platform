@@ -1,7 +1,8 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Notification } from '../types';
-import { AuthContext } from './AuthContext';
+import { useAuth } from './AuthContext';
 import { mockNotifications } from '../lib/mockData';
+import { apiRequest } from '../utils/supabase/client';
 
 interface NotificationContextType {
   notifications: Notification[];
@@ -17,11 +18,7 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
-  console.log('[NotificationContext] module init');
-  const auth = useContext(AuthContext);
-  if (auth === undefined) throw new Error('NotificationProvider must be used within an AuthProvider');
-  console.log('[NotificationContext] got auth context');
-  const { user, activePatientId } = auth;
+  const { user, activePatientId } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,21 +30,24 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
   const loadNotifications = async () => {
     setIsLoading(true);
-    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 300));
-      
-      const userId = user?.role === 'caregiver' && activePatientId 
-        ? activePatientId 
+      // Try live API first; fall back to mock if unavailable
+      let live: Notification[] | null = null;
+      try {
+        const data = await apiRequest('/notifications');
+        if (Array.isArray(data)) live = data;
+        else if (Array.isArray(data?.notifications)) live = data.notifications;
+      } catch {
+        // Endpoint 404 or auth error — use mock
+      }
+
+      const userId = user?.role === 'caregiver' && activePatientId
+        ? activePatientId
         : user?.id;
-      
-      // Filter notifications for current user/patient
-      const userNotifications = mockNotifications
-        .filter(n => n.userId === userId)
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      
-      setNotifications(userNotifications);
+
+      const source = live ?? mockNotifications.filter((n) => n.userId === userId || n.userId === 'user-anna-thompson');
+      const sorted = source.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setNotifications(sorted);
     } catch (error) {
       console.error('Failed to load notifications:', error);
     } finally {

@@ -17,10 +17,37 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+        success:
+          "border-transparent bg-[var(--success)] text-white",
+        warning:
+          "border-transparent bg-[var(--warning)] text-white",
+        info:
+          "border-transparent bg-[var(--blue)] text-white",
+        muted:
+          "border-transparent bg-[var(--badge-neutral-bg)] text-[var(--text-secondary)]",
+        navy:
+          "border-transparent bg-[var(--badge-navy-bg)] text-[var(--blue)]",
+        purple:
+          "border-transparent bg-[var(--badge-vault-bg)] text-[var(--purple)]",
+        teal:
+          "border-transparent bg-[var(--badge-teal-bg)] text-[var(--teal)]",
+        "success-light":
+          "border-transparent bg-[var(--priority-low-bg)] text-[var(--priority-low-text)]",
+        "warning-light":
+          "border-transparent bg-[var(--state-pending-bg)] text-[var(--state-pending-text)]",
+        "info-light":
+          "border-transparent bg-[var(--state-info-bg)] text-[var(--state-info-text)]",
+        "danger-light":
+          "border-transparent bg-[var(--state-error-bg)] text-[var(--state-error-text)]",
+      },
+      size: {
+        sm: "text-[10px] px-1.5 py-0",
+        md: "text-xs px-2 py-0.5",
       },
     },
     defaultVariants: {
       variant: "default",
+      size: "md",
     },
   },
 );
@@ -28,6 +55,7 @@ const badgeVariants = cva(
 function Badge({
   className,
   variant,
+  size,
   asChild = false,
   ...props
 }: React.ComponentProps<"span"> &
@@ -37,7 +65,7 @@ function Badge({
   return (
     <Comp
       data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
+      className={cn(badgeVariants({ variant, size }), className)}
       {...props}
     />
   );

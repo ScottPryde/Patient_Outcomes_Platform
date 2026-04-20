@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s https://yforafidhxehaecwkird.supabase.co/functions/v1/make-server-e8005093/health -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlmb3JhZmlkaHhlaGFlY3draXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NzA5ODIsImV4cCI6MjA5MjI0Njk4Mn0.jB0Yxj5vFs1pCakA_jsksLuzodvv3pyuVReRsftHFqM')",
+      "Read(//c/Users/Scott Pryde/Documents/demo_application_projects/Patient-Outcomes-Platform-main/Patient-Outcomes-Platform-main/src/**)",
+      "Read(//c/Users/Scott Pryde/Documents/demo_application_projects/**)"
+    ]
+  }
+}

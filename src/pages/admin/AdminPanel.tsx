@@ -42,7 +42,7 @@ export function AdminPanel() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Sidebar */}
         <div className="lg:col-span-1">
-          <nav className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-1">
+          <nav className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 space-y-1">
             {navigation.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
@@ -94,7 +94,7 @@ function AdminOverview() {
         <StatCard title="Consent Rate" value="94%" change="+2% from last month" />
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
         <h2 className="font-semibold mb-4">Recent Activity</h2>
         <div className="space-y-3 text-sm">
           <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
@@ -117,7 +117,7 @@ function AdminOverview() {
 
 function UserManagement() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="font-semibold mb-4">User Management</h2>
       <p className="text-gray-600 dark:text-gray-400">
         Manage user accounts, roles, and permissions.
@@ -128,7 +128,7 @@ function UserManagement() {
 
 function ConsentFramework() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="font-semibold mb-4">Consent Framework</h2>
       <p className="text-gray-600 dark:text-gray-400">
         Configure consent types, versions, and requirements.
@@ -139,7 +139,7 @@ function ConsentFramework() {
 
 function QuestionnaireBuilder() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="font-semibold mb-4">Questionnaire Builder</h2>
       <p className="text-gray-600 dark:text-gray-400">
         Create and manage PRO/Px questionnaires.
@@ -150,7 +150,7 @@ function QuestionnaireBuilder() {
 
 function TrialManagement() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="font-semibold mb-4">Trial Management</h2>
       <p className="text-gray-600 dark:text-gray-400">
         Manage clinical trials, cohorts, and eligibility criteria.
@@ -161,7 +161,7 @@ function TrialManagement() {
 
 function TagTaxonomy() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="font-semibold mb-4">Tag Taxonomy</h2>
       <p className="text-gray-600 dark:text-gray-400">
         Manage tags, categories, and interest topics.
@@ -172,7 +172,7 @@ function TagTaxonomy() {
 
 function AdminSettings() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="font-semibold mb-4">Platform Settings</h2>
       <p className="text-gray-600 dark:text-gray-400">
         Configure global platform settings and preferences.
@@ -183,7 +183,7 @@ function AdminSettings() {
 
 function StatCard({ title, value, change }: { title: string; value: string; change: string }) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{title}</p>
       <p className="text-3xl font-bold mb-1">{value}</p>
       <p className="text-sm text-green-600 dark:text-green-400">{change}</p>

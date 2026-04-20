@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { UserPlus, Mail, Check, X, Clock, Shield } from 'lucide-react';
-import { toast } from '../components/ui/sonner';
+import { toast } from 'sonner';
 
 export function CaregiverLinking() {
   const { user, linkedPatients } = useAuth();
@@ -71,7 +71,7 @@ export function CaregiverLinking() {
           </div>
 
           {showInviteForm && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
               <h3 className="font-medium mb-4">Request Patient Access</h3>
               
               <div className="space-y-4">
@@ -123,7 +123,7 @@ export function CaregiverLinking() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {linkedPatients.length === 0 ? (
-              <div className="col-span-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
+              <div className="col-span-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
                 <UserPlus className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                 <h3 className="font-medium mb-2">No Linked Patients</h3>
                 <p className="text-gray-600 dark:text-gray-400">
@@ -134,11 +134,11 @@ export function CaregiverLinking() {
               linkedPatients.map((patient) => (
                 <div
                   key={patient.id}
-                  className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
+                  className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-[var(--purple)] rounded-full flex items-center justify-center">
                         <span className="text-white font-medium">
                           {patient.firstName.charAt(0)}{patient.lastName.charAt(0)}
                         </span>
@@ -186,7 +186,7 @@ export function CaregiverLinking() {
                 {pendingRequests.map((request) => (
                   <div
                     key={request.id}
-                    className="bg-white dark:bg-gray-800 rounded-xl border-2 border-yellow-200 dark:border-yellow-800 p-6"
+                    className="bg-white dark:bg-gray-800 rounded-lg border-2 border-yellow-200 dark:border-yellow-800 p-6"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
@@ -235,7 +235,7 @@ export function CaregiverLinking() {
           {/* Authorized caregivers */}
           <div>
             <h2 className="font-semibold mb-4">Authorized Caregivers</h2>
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
               <Shield className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <h3 className="font-medium mb-2">No Authorized Caregivers</h3>
               <p className="text-gray-600 dark:text-gray-400">

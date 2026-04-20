@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Mail, Users, UserPlus, ClipboardList, Share2 } from 'lucide-react';
-import { toast } from '../components/ui/sonner';
+import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
 
 const CARE_ROLES = ['Parent', 'Sibling', 'Child', 'Friend'] as const;
@@ -92,7 +92,7 @@ export function CareGroup() {
       </div>
 
       {showInviteForm && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Name (optional)</label>
@@ -175,7 +175,7 @@ export function CareGroup() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {members.length === 0 ? (
-          <div className="col-span-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-10 text-center">
+          <div className="col-span-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-10 text-center">
             <Users className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
             <h3 className="font-medium mb-2">No care group members yet</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-2">
@@ -189,7 +189,7 @@ export function CareGroup() {
           members.map((member) => (
             <div
               key={member.id}
-              className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 flex flex-col gap-3"
+              className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 flex flex-col gap-3"
             >
               <div className="flex items-start justify-between">
                 <div>
