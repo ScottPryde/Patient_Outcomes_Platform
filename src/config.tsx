@@ -19,7 +19,7 @@
 export const config = {
   // Replace these with your actual Supabase values if auto-discovery fails:
   supabaseUrl: 'https://yforafidhxehaecwkird.supabase.co',
-  supabaseAnonKey: 'REPLACE_WITH_NEW_ANON_KEY',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlmb3JhZmlkaHhlaGFlY3draXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NzA5ODIsImV4cCI6MjA5MjI0Njk4Mn0.jB0Yxj5vFs1pCakA_jsksLuzodvv3pyuVReRsftHFqM',
 };
 
 // Default export for compatibility
