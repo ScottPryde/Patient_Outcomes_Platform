@@ -14,8 +14,17 @@ export async function seedDatabase() {
   // ============================================================================
 
   const demoUsers = [
-    { 
-      email: 'patient@carepro.com', 
+    {
+      email: 'anna.thompson@demo.interactium.io',
+      password: 'Carepro1234!',
+      firstName: 'Anna',
+      lastName: 'Thompson',
+      role: 'patient',
+      dateOfBirth: '1988-03-22',
+      phone: '555-0100'
+    },
+    {
+      email: 'patient@carepro.com',
       password: 'CarePRO2024!', 
       firstName: 'Sarah', 
       lastName: 'Johnson', 
